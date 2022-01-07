@@ -41,15 +41,18 @@ struct RecipesView: View {
                 }
             }
         }
-        
     }
     
+    // Shown when no recipe has been added
     var emptyView: some View {
         ZStack {
             Color.cyan
             
             VStack(alignment: .center, spacing: 20) {
                 Text("No Recipe")
+                    .font(.title)
+                    .bold()
+                    .foregroundColor(.white)
                 Text("Let's add your favourite recipes!")
                 Button(action: {
                     isAddViewPresented = true
@@ -67,7 +70,6 @@ struct RecipesView: View {
                 }
             }
         }
-        
     }
     
     var addRecipeButton: some View {
