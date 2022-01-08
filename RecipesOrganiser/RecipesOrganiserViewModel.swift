@@ -19,7 +19,10 @@ class RecipesOrganiserViewModel: ObservableObject {
             loadDefaultCategories()
         }
         else {
-            print("Categories have been loaded")
+            print("Categories have already been loaded")
+            
+            // delete all
+//            Category.deleteAll(context: context)
         }
     }
     
