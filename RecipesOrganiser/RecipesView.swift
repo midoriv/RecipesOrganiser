@@ -11,12 +11,12 @@ import CoreData
 struct RecipesView: View {
     @EnvironmentObject var viewModel: RecipesOrganiserViewModel
     @Environment(\.managedObjectContext) private var viewContext
-    
     @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
     
     @State private var isAddViewPresented = false
-    @State var title = ""
+    @State var name = ""
     @State var url = ""
+    @State var categoryName = ""
     
     var body: some View {
         if recipes.isEmpty {
@@ -34,7 +34,7 @@ struct RecipesView: View {
             .navigationBarItems(leading: editButton, trailing: addButton)
             .fullScreenCover(isPresented: $isAddViewPresented) {
                 NavigationView {
-                    AddView(title: $title, url: $url)
+                    AddView(name: $name, url: $url, categoryName: $categoryName)
                         .navigationTitle("Add Favourite Recipe")
                         .navigationBarItems(leading: Button("Cancel") {
                             isAddViewPresented = false
@@ -63,7 +63,7 @@ struct RecipesView: View {
             }
             .fullScreenCover(isPresented: $isAddViewPresented) {
                 NavigationView {
-                    AddView(title: $title, url: $url)
+                    AddView(name: $name, url: $url, categoryName: $categoryName)
                         .navigationTitle("Add Favourite Recipe")
                         .navigationBarItems(leading: Button("Cancel") {
                             isAddViewPresented = false
