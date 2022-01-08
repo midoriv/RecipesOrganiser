@@ -31,8 +31,14 @@ extension Category {
         try? context.save()
     }
     
+    var name: String {
+        get { name_ ?? "" }
+        set { name_ = newValue }
+    }
+    
     var recipes: Set<Recipe> {
         get { (recipes_ as? Set<Recipe>) ?? [] }
         set { recipes_ = newValue as NSSet }
     }
  }
+
