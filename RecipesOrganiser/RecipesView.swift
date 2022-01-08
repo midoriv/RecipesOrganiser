@@ -38,7 +38,7 @@ struct RecipesView: View {
                         .navigationTitle("Add Favourite Recipe")
                         .navigationBarItems(leading: Button("Cancel") {
                             isAddViewPresented = false
-                        })
+                        }, trailing: saveButton)
                 }
             }
         }
@@ -67,7 +67,7 @@ struct RecipesView: View {
                         .navigationTitle("Add Favourite Recipe")
                         .navigationBarItems(leading: Button("Cancel") {
                             isAddViewPresented = false
-                        })
+                        }, trailing: saveButton)
                 }
             }
         }
@@ -91,15 +91,16 @@ struct RecipesView: View {
         }
     }
     
-//    var saveButton: some View {
-//        Button("Save") {
-//            viewModel.add(title: title, url: url)
-//            title = ""
-//            url = ""
-//            isAddViewPresented = false
-//        }
-//        .disabled(title.isEmpty || url.isEmpty)
-//    }
+    var saveButton: some View {
+        Button("Save") {
+            Recipe.add(name: name, url: url, categoryName: categoryName, in: viewContext)
+            name = ""
+            url = ""
+            categoryName = ""
+            isAddViewPresented = false
+        }
+        .disabled(name.isEmpty || url.isEmpty || categoryName.isEmpty)
+    }
     
     var editButton: some View {
         NavigationLink(destination: EditView()) {
