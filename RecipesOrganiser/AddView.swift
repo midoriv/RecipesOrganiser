@@ -8,20 +8,25 @@
 import SwiftUI
 
 struct AddView: View {
-    @Binding var title: String
+    @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
+    @Binding var name: String
     @Binding var url: String
+    @Binding var categoryName: String
     
     var body: some View {
-        
         List {
-            TextField(text: $title, prompt: Text("Recipe Title")) {
-                Text("Recipe Title")
+            TextField(text: $name, prompt: Text("Recipe Name")) {
+                Text("Recipe Name")
             }
             TextField(text: $url, prompt: Text("Recipe URL")) {
                 Text("Recipe URL")
             }
+            Picker("Category", selection: $categoryName, content: {
+                ForEach(categories, id: \.name) { category in
+                    Text(category.name)
+                }
+            })
         }
-        
     }
 }
 
