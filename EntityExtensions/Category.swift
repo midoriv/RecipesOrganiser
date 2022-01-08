@@ -14,6 +14,16 @@ extension Category {
         return categories.count
     }
     
+    static func deleteAll(context: NSManagedObjectContext) {
+        let request = fetchRequest(NSPredicate(format: "TRUEPREDICATE"))
+        let categories = (try? context.fetch(request)) ?? []
+        for category in categories {
+            context.delete(category)
+        }
+        try? context.save()
+        print("Deleted all categories")
+    }
+    
     static func fetchRequest(_ predicate: NSPredicate) -> NSFetchRequest<Category> {
         let request = NSFetchRequest<Category>(entityName: "Category")
         request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
