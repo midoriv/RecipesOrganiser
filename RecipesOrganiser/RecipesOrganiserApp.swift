@@ -15,6 +15,7 @@ struct RecipesOrganiserApp: App {
         WindowGroup {
             RecipesView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(RecipesOrganiserViewModel(context: persistenceController.container.viewContext))
         }
     }
 }

@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct RecipesView: View {
+    @EnvironmentObject var viewModel: RecipesOrganiserViewModel
     @Environment(\.managedObjectContext) private var viewContext
     
     @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
