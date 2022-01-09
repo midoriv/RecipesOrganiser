@@ -33,8 +33,8 @@ class RecipesOrganiserViewModel: ObservableObject {
             "Noodles", "Rice"
         ]
         
-        for (index, name) in categoryNames.enumerated() {
-            Category.add(name: name, id: index, in: context)
+        for name in categoryNames {
+            Category.add(name: name, in: context)
         }
     }
 }

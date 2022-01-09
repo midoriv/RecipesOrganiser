@@ -31,10 +31,10 @@ extension Category {
         return request
     }
     
-    static func add(name: String, id: Int, in context: NSManagedObjectContext) {
+    static func add(name: String, in context: NSManagedObjectContext) {
         let category = Category(context: context)
         category.name = name
-        category.id = Int16(id)
+        category.id = UUID()
         category.objectWillChange.send()
         category.recipes.forEach { $0.objectWillChange.send() }
         
