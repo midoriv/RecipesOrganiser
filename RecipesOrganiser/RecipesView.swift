@@ -25,7 +25,7 @@ struct RecipesView: View {
         else {
             List {
                 ForEach(recipes) { recipe in
-                    NavigationLink(destination: RecipeWebView(url: recipe.url)) {
+                    NavigationLink(destination: RecipeWebView(urlStr: recipe.url)) {
                         RecipeRowView(recipe: recipe)
                     }
                 }
@@ -103,9 +103,10 @@ struct RecipesView: View {
     }
     
     var editButton: some View {
-        NavigationLink(destination: EditView()) {
-            Text("Edit")
-        }
+//        NavigationLink(destination: EditView()) {
+//            Text("Edit")
+//        }
+        Text("Edit")
     }
 }
 
