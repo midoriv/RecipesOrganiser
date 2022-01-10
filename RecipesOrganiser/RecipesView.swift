@@ -30,6 +30,7 @@ struct RecipesView: View {
                             RecipeRowView(recipe: recipe)
                         }
                     }
+                    .onDelete(perform: removeRecipe)
                 }
                 .navigationTitle("Favourite Recipes")
                 .navigationBarItems(leading: editButton, trailing: addButton)
@@ -110,11 +111,12 @@ struct RecipesView: View {
 //        }
         Text("Edit")
     }
+    
+    func removeRecipe(at offsets: IndexSet) {
+        for index in offsets {
+            let recipe = recipes[index]
+            viewContext.delete(recipe)
+            try? viewContext.save()
+        }
+    }
 }
-
-
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-//    }
-//}
