@@ -12,12 +12,13 @@ struct RecipeRowView: View {
     let recipe: Recipe
     
     var body: some View {
-        VStack() {
+        VStack(alignment: .leading) {
             Text(recipe.name)
-            Text(recipe.url)
+            Text(recipe.category!.name)
         }
-        .padding(.top, 20)
-        .padding(.bottom, 20)
+    }
+}
+
 struct RecipeRowView_Previews: PreviewProvider {
     
     static var previews: some View {
