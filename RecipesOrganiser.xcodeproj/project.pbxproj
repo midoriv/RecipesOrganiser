@@ -20,6 +20,7 @@
 		07D73587278BC484006923EB /* RecipeWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D73586278BC484006923EB /* RecipeWebView.swift */; };
 		07D73589278BC4DF006923EB /* RecipeRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D73588278BC4DF006923EB /* RecipeRowView.swift */; };
 		07D7358B278BC7D4006923EB /* RecipeRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D7358A278BC7D4006923EB /* RecipeRowView.swift */; };
+		07D7358D278BE3D6006923EB /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 07D7358C278BE3D6006923EB /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		07D73586278BC484006923EB /* RecipeWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeWebView.swift; sourceTree = "<group>"; };
 		07D73588278BC4DF006923EB /* RecipeRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecipeRowView.swift; path = RecipesOrganiser/RecipeRowView.swift; sourceTree = SOURCE_ROOT; };
 		07D7358A278BC7D4006923EB /* RecipeRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeRowView.swift; sourceTree = "<group>"; };
+		07D7358C278BE3D6006923EB /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		07BFD03127869D8700F091DD = {
 			isa = PBXGroup;
 			children = (
+				07D7358C278BE3D6006923EB /* .gitignore */,
 				075421B72789C90400BDDEFD /* EntityExtensions */,
 				07BFD03C27869D8800F091DD /* RecipesOrganiser */,
 				07BFD03B27869D8800F091DD /* Products */,
@@ -161,6 +164,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07BFD04527869D8A00F091DD /* Preview Assets.xcassets in Resources */,
+				07D7358D278BE3D6006923EB /* .gitignore in Resources */,
 				07BFD04227869D8A00F091DD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
