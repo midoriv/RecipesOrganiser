@@ -24,8 +24,11 @@ struct RecipeRowView_Previews: PreviewProvider {
     static var previews: some View {
         let context = PersistenceController.preview.container.viewContext
         let recipe = Recipe(context: context)
+        let category = Category(context: context)
+        category.name = "Pasta"
+        
         recipe.name = "Test Recipe"
-        recipe.url = "https://testrecipe.com"
+        recipe.category = category
         
         return RecipeRowView(recipe: recipe)
             .previewLayout(.fixed(width: 400, height: 60))
