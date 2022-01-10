@@ -24,6 +24,13 @@ extension Category {
         print("Deleted all categories")
     }
     
+    // find a Category with a given name
+    static func withName(_ name: String, context: NSManagedObjectContext) -> Category? {
+        let request = fetchRequest(NSPredicate(format: "name_ = %@", name))
+        let category = (try? context.fetch(request)) ?? []
+        return category.first
+    }
+    
     static func fetchRequest(_ predicate: NSPredicate) -> NSFetchRequest<Category> {
         let request = NSFetchRequest<Category>(entityName: "Category")
         request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
@@ -37,7 +44,6 @@ extension Category {
         category.id = UUID()
         category.objectWillChange.send()
         category.recipes.forEach { $0.objectWillChange.send() }
-        
         try? context.save()
     }
     
