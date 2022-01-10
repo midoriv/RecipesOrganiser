@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct RecipeRowView: View {
     let recipe: Recipe
@@ -17,5 +18,15 @@ struct RecipeRowView: View {
         }
         .padding(.top, 20)
         .padding(.bottom, 20)
+struct RecipeRowView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        let context = PersistenceController.preview.container.viewContext
+        let recipe = Recipe(context: context)
+        recipe.name = "Test Recipe"
+        recipe.url = "https://testrecipe.com"
+        
+        return RecipeRowView(recipe: recipe)
+            .previewLayout(.fixed(width: 400, height: 60))
     }
 }

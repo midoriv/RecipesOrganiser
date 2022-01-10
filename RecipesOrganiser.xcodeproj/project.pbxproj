@@ -19,6 +19,7 @@
 		07BFD04A27869D8A00F091DD /* RecipesOrganiser.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 07BFD04827869D8A00F091DD /* RecipesOrganiser.xcdatamodeld */; };
 		07D73587278BC484006923EB /* RecipeWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D73586278BC484006923EB /* RecipeWebView.swift */; };
 		07D73589278BC4DF006923EB /* RecipeRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D73588278BC4DF006923EB /* RecipeRowView.swift */; };
+		07D7358B278BC7D4006923EB /* RecipeRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D7358A278BC7D4006923EB /* RecipeRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		07BFD04927869D8A00F091DD /* RecipesOrganiser.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RecipesOrganiser.xcdatamodel; sourceTree = "<group>"; };
 		07D73586278BC484006923EB /* RecipeWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeWebView.swift; sourceTree = "<group>"; };
 		07D73588278BC4DF006923EB /* RecipeRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecipeRowView.swift; path = RecipesOrganiser/RecipeRowView.swift; sourceTree = SOURCE_ROOT; };
+		07D7358A278BC7D4006923EB /* RecipeRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				075421B02789C82600BDDEFD /* RecipesOrganiserViewModel.swift */,
 				07D73586278BC484006923EB /* RecipeWebView.swift */,
 				075421AE2789C82600BDDEFD /* RecipesView.swift */,
+				07D7358A278BC7D4006923EB /* RecipeRowView.swift */,
 				07BFD03D27869D8800F091DD /* RecipesOrganiserApp.swift */,
 				07BFD04127869D8A00F091DD /* Assets.xcassets */,
 				07BFD04627869D8A00F091DD /* Persistence.swift */,
@@ -171,6 +174,7 @@
 			files = (
 				07BFD04727869D8A00F091DD /* Persistence.swift in Sources */,
 				075421B52789C82600BDDEFD /* RecipesOrganiserViewModel.swift in Sources */,
+				07D7358B278BC7D4006923EB /* RecipeRowView.swift in Sources */,
 				075421BA2789C90400BDDEFD /* Recipe.swift in Sources */,
 				075421B42789C82600BDDEFD /* AddView.swift in Sources */,
 				075421B32789C82600BDDEFD /* RecipesView.swift in Sources */,
