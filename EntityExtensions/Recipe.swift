@@ -10,7 +10,7 @@ import CoreData
 extension Recipe {
     static func fetchRequest(_ predicate: NSPredicate) -> NSFetchRequest<Recipe> {
         let request = NSFetchRequest<Recipe>(entityName: "Recipe")
-        request.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(key: "timestamp_", ascending: true)]
         request.predicate = predicate
         return request
     }
@@ -23,7 +23,9 @@ extension Recipe {
         recipe.timestamp = Date()
         recipe.id = UUID()
         recipe.objectWillChange.send()
-        recipe.category = Category.withName(categoryName, context: context)
+        if let category = Category.withName(categoryName, context: context) {
+            recipe.category = category
+        }
         try? context.save()
         print("Recipe saved")
     }
@@ -36,5 +38,15 @@ extension Recipe {
     var url: String {
         get { url_ ?? "" }
         set { url_ = newValue }
+    }
+    
+    var timestamp: Date {
+        get { timestamp_! }
+        set { timestamp_ = newValue }
+    }
+    
+    var category: Category {
+        get { category_! }
+        set { category_ = newValue }
     }
 }

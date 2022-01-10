@@ -14,7 +14,7 @@ struct RecipeRowView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(recipe.name)
-            Text(recipe.category!.name)
+            Text(recipe.category.name)
         }
     }
 }
