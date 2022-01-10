@@ -27,4 +27,14 @@ extension Recipe {
         try? context.save()
         print("Recipe saved")
     }
+    
+    var name: String {
+        get { name_ ?? "" }
+        set { name_ = newValue }
+    }
+    
+    var url: String {
+        get { url_ ?? "" }
+        set { url_ = newValue }
+    }
 }
