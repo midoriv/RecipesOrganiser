@@ -23,22 +23,24 @@ struct RecipesView: View {
             emptyView
         }
         else {
-            List {
-                ForEach(recipes) { recipe in
-                    NavigationLink(destination: RecipeWebView(urlStr: recipe.url)) {
-                        RecipeRowView(recipe: recipe)
+            NavigationView {
+                List {
+                    ForEach(recipes) { recipe in
+                        NavigationLink(destination: RecipeWebView(urlStr: recipe.url)) {
+                            RecipeRowView(recipe: recipe)
+                        }
                     }
                 }
-            }
-            .navigationTitle("Favourite Recipes")
-            .navigationBarItems(leading: editButton, trailing: addButton)
-            .fullScreenCover(isPresented: $isAddViewPresented) {
-                NavigationView {
-                    AddView(name: $name, url: $url, categoryName: $categoryName)
-                        .navigationTitle("Add Favourite Recipe")
-                        .navigationBarItems(leading: Button("Cancel") {
-                            isAddViewPresented = false
-                        }, trailing: saveButton)
+                .navigationTitle("Favourite Recipes")
+                .navigationBarItems(leading: editButton, trailing: addButton)
+                .fullScreenCover(isPresented: $isAddViewPresented) {
+                    NavigationView {
+                        AddView(name: $name, url: $url, categoryName: $categoryName)
+                            .navigationTitle("Add Favourite Recipe")
+                            .navigationBarItems(leading: Button("Cancel") {
+                                isAddViewPresented = false
+                            }, trailing: saveButton)
+                    }
                 }
             }
         }

@@ -13,11 +13,9 @@ struct RecipesOrganiserApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                RecipesView()
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                    .environmentObject(RecipesOrganiserViewModel(context: persistenceController.container.viewContext))
-            }
+            RecipesView()
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(RecipesOrganiserViewModel(context: persistenceController.container.viewContext))    
         }
     }
 }
