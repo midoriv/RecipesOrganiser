@@ -29,9 +29,3 @@ struct AddView: View {
         }
     }
 }
-
-//struct EditView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddView()
-//    }
-//}
