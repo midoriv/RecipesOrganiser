@@ -11,13 +11,7 @@ import CoreData
 struct RecipesView: View {
     @EnvironmentObject var viewModel: RecipesOrganiserViewModel
     @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var fetchedRecipes: FetchedResults<Recipe>
-    
-    var recipes: Array<Recipe> {
-        get {
-            fetchedRecipes.filter { !$0.isFault }
-        }
-    }
+    @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
     
     @State private var isAddViewPresented = false
     @State var name = ""
