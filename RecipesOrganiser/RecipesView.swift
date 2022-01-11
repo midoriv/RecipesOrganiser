@@ -20,6 +20,7 @@ struct RecipesView: View {
     
     @State private var editMode: EditMode = .inactive
     @State private var isEditViewPresented = false
+    @State var idToEdit: UUID?
     
     var body: some View {
         if recipes.isEmpty {
@@ -47,7 +48,6 @@ struct RecipesView: View {
                             }, trailing: saveButton)
                     }
                 }
-                .environment(\.editMode, $editMode)
                 .fullScreenCover(isPresented: $isEditViewPresented) {
                     NavigationView {
                         EditView(name: $name, url: $url, categoryName: $categoryName)
@@ -55,9 +55,10 @@ struct RecipesView: View {
                             .navigationBarItems(leading: Button("Cancel") {
                                 isEditViewPresented = false
                                 editMode = .inactive
-                            }, trailing: saveButton)
+                            }, trailing: saveEditButton)
                     }
                 }
+                .environment(\.editMode, $editMode)
             }
         }
     }
@@ -69,6 +70,7 @@ struct RecipesView: View {
             name = recipe.name
             url = recipe.url
             categoryName = recipe.category.name
+            idToEdit = recipe.id
         }
     }
     
@@ -114,6 +116,9 @@ struct RecipesView: View {
     var addButton: some View {
         Button(action: {
             isAddViewPresented = true
+            name = ""
+            url = ""
+            categoryName = ""
         }) {
             Image(systemName: "plus")
         }
@@ -128,6 +133,20 @@ struct RecipesView: View {
             isAddViewPresented = false
         }
         .disabled(name.isEmpty || url.isEmpty || categoryName.isEmpty)
+    }
+    
+    var saveEditButton: some View {
+        Button("Save") {
+            editMode = .inactive
+            
+            Recipe.update(id: idToEdit!, name: name, url: url, categoryName: categoryName, in: viewContext)
+            
+            isEditViewPresented = false
+            idToEdit = nil
+            name = ""
+            url = ""
+            categoryName = ""
+        }
     }
     
     func removeRecipe(at offsets: IndexSet) {
