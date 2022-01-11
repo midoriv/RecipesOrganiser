@@ -20,9 +20,6 @@ struct RecipesView: View {
     
     @State private var editMode: EditMode = .inactive
     @State private var isEditViewPresented = false
-    @State var nameToEdit = ""
-    @State var urlToEdit = ""
-    @State var categoryNameToEdit = ""
     
     var body: some View {
         if recipes.isEmpty {
@@ -53,7 +50,7 @@ struct RecipesView: View {
                 .environment(\.editMode, $editMode)
                 .fullScreenCover(isPresented: $isEditViewPresented) {
                     NavigationView {
-                        EditView(name: $nameToEdit, url: $urlToEdit, categoryName: $categoryNameToEdit)
+                        EditView(name: $name, url: $url, categoryName: $categoryName)
                             .navigationTitle("Edit Recipe")
                             .navigationBarItems(leading: Button("Cancel") {
                                 isEditViewPresented = false
@@ -65,12 +62,13 @@ struct RecipesView: View {
         }
     }
     
+    // returns a gesture to occur when RecipeRowView is tapped during edit mode
     func tap(on recipe: Recipe) -> some Gesture {
         TapGesture().onEnded {
             isEditViewPresented = true
-            nameToEdit = recipe.name
-            urlToEdit = recipe.url
-            categoryNameToEdit = recipe.category.name
+            name = recipe.name
+            url = recipe.url
+            categoryName = recipe.category.name
         }
     }
     
