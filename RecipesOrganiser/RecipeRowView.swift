@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct RecipeRowView: View {
-    let recipe: Recipe
+    @ObservedObject var recipe: Recipe
     
     var body: some View {
         if (!recipe.name.isEmpty) {

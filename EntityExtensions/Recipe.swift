@@ -42,7 +42,6 @@ extension Recipe {
         recipe.count = 0
         recipe.timestamp = Date()
         recipe.id = UUID()
-        recipe.objectWillChange.send()
         if let category = Category.withName(categoryName, context: context) {
             recipe.category = category
         }
