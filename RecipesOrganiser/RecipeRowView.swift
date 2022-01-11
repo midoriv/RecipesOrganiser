@@ -12,15 +12,17 @@ struct RecipeRowView: View {
     let recipe: Recipe
     
     var body: some View {
-        HStack() {
-            Text(recipe.name)
-            Spacer()
-            Text(recipe.category.name)
-                .font(.caption)
-                .bold()
-                .foregroundColor(.cyan)
+        if (!recipe.name.isEmpty) {
+            HStack() {
+                Text(recipe.name)
+                Spacer()
+                Text(recipe.category.name)
+                    .font(.caption)
+                    .bold()
+                    .foregroundColor(.cyan)
+            }
+            .padding()
         }
-        .padding()
     }
 }
 

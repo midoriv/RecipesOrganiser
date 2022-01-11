@@ -11,7 +11,13 @@ import CoreData
 struct RecipesView: View {
     @EnvironmentObject var viewModel: RecipesOrganiserViewModel
     @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
+    @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var fetchedRecipes: FetchedResults<Recipe>
+    
+    var recipes: Array<Recipe> {
+        get {
+            fetchedRecipes.filter { !$0.isFault }
+        }
+    }
     
     @State private var isAddViewPresented = false
     @State var name = ""
@@ -150,10 +156,13 @@ struct RecipesView: View {
     }
     
     func removeRecipe(at offsets: IndexSet) {
-        for index in offsets {
-            let recipe = recipes[index]
-            viewContext.delete(recipe)
-            try? viewContext.save()
+        withAnimation {
+            for index in offsets {
+                let recipe = recipes[index]
+                viewContext.delete(recipe)
+                try? viewContext.save()
+                print("recipe deleted")
+            }
         }
     }
 }
