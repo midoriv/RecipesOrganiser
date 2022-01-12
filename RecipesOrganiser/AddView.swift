@@ -9,23 +9,39 @@ import SwiftUI
 
 struct AddView: View {
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
-    @Binding var name: String
-    @Binding var url: String
-    @Binding var categoryName: String
+    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.dismiss) private var dismiss
+    
+    @State var recipe: RecipeToAdd
     
     var body: some View {
         List {
-            TextField(text: $name, prompt: Text("Recipe Name")) {
+            TextField(text: $recipe.name, prompt: Text("Recipe Name")) {
                 Text("Recipe Name")
             }
-            TextField(text: $url, prompt: Text("Recipe URL")) {
+            TextField(text: $recipe.url, prompt: Text("Recipe URL")) {
                 Text("Recipe URL")
             }
-            Picker("Category", selection: $categoryName, content: {
+            Picker("Category", selection: $recipe.categoryName, content: {
                 ForEach(categories, id: \.name) { category in
                     Text(category.name)
                 }
             })
         }
+        .navigationTitle("Add Favourite Recipe")
+        .navigationBarItems(leading: Button("Cancel") {
+            dismiss()
+        }, trailing: saveButton)
+    }
+    
+    var saveButton: some View {
+        Button("Save") {
+//            editMode = .inactive
+            
+            Recipe.add(name: recipe.name, url: recipe.url, categoryName: recipe.categoryName, in: viewContext)
+            
+            dismiss()
+        }
+        .disabled(recipe.name.isEmpty || recipe.url.isEmpty || recipe.categoryName.isEmpty)
     }
 }

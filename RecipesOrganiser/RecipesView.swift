@@ -13,19 +13,10 @@ struct RecipesView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
     
-    @State private var isAddViewPresented = false
-    @State var name = ""
-    @State var url = ""
-    @State var categoryName = ""
-    
+    @State var recipeToAdd: RecipeToAdd?
     @State var selectedRecipe: Recipe?
     
     @State private var editMode: EditMode = .inactive
-//    @State private var isEditViewPresented = false {
-//        didSet {
-//            print("isEdit: \(oldValue) -> \(isEditViewPresented) -- name: \(name)")
-//        }
-//    }
     @State var idToEdit: UUID?
     
     var body: some View {
@@ -45,15 +36,13 @@ struct RecipesView: View {
                 }
                 .navigationTitle("Favourite Recipes")
                 .navigationBarItems(leading: EditButton(), trailing: addButton)
-                .fullScreenCover(isPresented: $isAddViewPresented) {
+                .fullScreenCover(item: $recipeToAdd, onDismiss: {
+                    self.recipeToAdd = nil
+                }, content: { recipe in
                     NavigationView {
-                        AddView(name: $name, url: $url, categoryName: $categoryName)
-                            .navigationTitle("Add Favourite Recipe")
-                            .navigationBarItems(leading: Button("Cancel") {
-                                isAddViewPresented = false
-                            }, trailing: saveButton)
+                        AddView(recipe: recipe)
                     }
-                }
+                })
                 .fullScreenCover(item: $selectedRecipe, onDismiss: {
                     self.selectedRecipe = nil
                 }, content: { recipe in
@@ -85,57 +74,39 @@ struct RecipesView: View {
                     .bold()
                     .foregroundColor(.white)
                 Text("Let's add your favourite recipes!")
-                Button(action: {
-                    isAddViewPresented = true
-                }) {
-                    addRecipeButton
-                }
+                
+                addRecipeButton
             }
-            .fullScreenCover(isPresented: $isAddViewPresented) {
+            .fullScreenCover(item: $recipeToAdd, onDismiss: {
+                self.recipeToAdd = nil
+            }, content: { recipe in
                 NavigationView {
-                    AddView(name: $name, url: $url, categoryName: $categoryName)
-                        .navigationTitle("Add Favourite Recipe")
-                        .navigationBarItems(
-                            leading: Button("Cancel") {
-                            isAddViewPresented = false
-                        }, trailing: saveButton)
+                    AddView(recipe: recipe) 
                 }
-            }
+            })
         }
     }
     
     var addRecipeButton: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 16)
-                .foregroundColor(.white)
-            Text("Add Recipe")
-                .foregroundColor(.cyan)
+        Button(action: {
+            recipeToAdd = RecipeToAdd()
+        }) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 16)
+                    .foregroundColor(.white)
+                Text("Add Recipe")
+                    .foregroundColor(.cyan)
+            }
+            .frame(width: 120, height: 40)
         }
-        .frame(width: 120, height: 40)
     }
     
     var addButton: some View {
         Button(action: {
-            isAddViewPresented = true
-            name = ""
-            url = ""
-            categoryName = ""
+            recipeToAdd = RecipeToAdd()
         }) {
             Image(systemName: "plus")
         }
-    }
-    
-    var saveButton: some View {
-        Button("Save") {
-            editMode = .inactive
-            
-            Recipe.add(name: name, url: url, categoryName: categoryName, in: viewContext)
-            name = ""
-            url = ""
-            categoryName = ""
-            isAddViewPresented = false
-        }
-        .disabled(name.isEmpty || url.isEmpty || categoryName.isEmpty)
     }
     
     func removeRecipe(at offsets: IndexSet) {
@@ -148,4 +119,11 @@ struct RecipesView: View {
             }
         }
     }
+}
+
+struct RecipeToAdd: Identifiable {
+    var name = ""
+    var url = ""
+    var categoryName = ""
+    var id = UUID()
 }
