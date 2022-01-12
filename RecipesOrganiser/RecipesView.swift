@@ -47,7 +47,7 @@ struct RecipesView: View {
                     self.selectedRecipe = nil
                 }, content: { recipe in
                     NavigationView {
-                        EditView(editMode: $editMode, recipe: recipe)
+                        EditView(editMode: $editMode, recipe: RecipeToAdd(name: recipe.name, url: recipe.url, categoryName: recipe.category.name, id: recipe.id!))
                     }
                 })
                 .environment(\.editMode, $editMode)

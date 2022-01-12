@@ -13,7 +13,7 @@ struct EditView: View {
     @Environment(\.dismiss) private var dismiss
     
     @Binding var editMode: EditMode
-    @State var recipe: Recipe
+    @State var recipe: RecipeToAdd
     
     var body: some View {
         List {
@@ -28,9 +28,9 @@ struct EditView: View {
                 }
             }
             Section(header: Text("Category")) {
-                Picker("Category", selection: $recipe.category.name, content: {
+                Picker("Category", selection: $recipe.categoryName, content: {
                     ForEach(categories, id: \.name) { category in
-                        Text(recipe.category.name)
+                        Text(recipe.categoryName)
                     }
                 })
             }
@@ -46,10 +46,10 @@ struct EditView: View {
         Button("Save") {
             editMode = .inactive
             
-            Recipe.update(id: recipe.id!, name: recipe.name, url: recipe.url, categoryName: recipe.category.name, in: viewContext)
+            Recipe.update(id: recipe.id, name: recipe.name, url: recipe.url, categoryName: recipe.categoryName, in: viewContext)
             
             dismiss()
         }
-        .disabled(recipe.name.isEmpty || recipe.url.isEmpty || recipe.category.name.isEmpty)
+        .disabled(recipe.name.isEmpty || recipe.url.isEmpty || recipe.categoryName.isEmpty)
     }
 }
