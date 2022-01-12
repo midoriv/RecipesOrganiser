@@ -13,7 +13,7 @@ struct EditView: View {
     @Environment(\.dismiss) private var dismiss
     
     @Binding var editMode: EditMode
-    @State var recipe: RecipeToAdd
+    @State var recipe: TemporaryRecipeState
     
     var body: some View {
         List {

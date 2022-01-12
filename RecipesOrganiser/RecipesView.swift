@@ -13,8 +13,8 @@ struct RecipesView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
     
-    @State var recipeToAdd: RecipeToAdd?
-    @State var recipeToEdit: RecipeToAdd?
+    @State var recipeToAdd: TemporaryRecipeState?
+    @State var recipeToEdit: TemporaryRecipeState?
     @State private var editMode: EditMode = .inactive
     @State var idToEdit: UUID?
     
@@ -58,7 +58,7 @@ struct RecipesView: View {
     func tap(on recipe: Recipe) -> some Gesture {
         TapGesture(count: 1).onEnded {
             idToEdit = recipe.id
-            recipeToEdit = RecipeToAdd(name: recipe.name, url: recipe.url, categoryName: recipe.category.name, id: recipe.id!)
+            recipeToEdit = TemporaryRecipeState(name: recipe.name, url: recipe.url, categoryName: recipe.category.name, id: recipe.id!)
         }
     }
     
@@ -88,7 +88,7 @@ struct RecipesView: View {
     
     var addRecipeButton: some View {
         Button(action: {
-            recipeToAdd = RecipeToAdd()
+            recipeToAdd = TemporaryRecipeState()
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: 16)
@@ -102,7 +102,7 @@ struct RecipesView: View {
     
     var addButton: some View {
         Button(action: {
-            recipeToAdd = RecipeToAdd()
+            recipeToAdd = TemporaryRecipeState()
         }) {
             Image(systemName: "plus")
         }
@@ -120,7 +120,7 @@ struct RecipesView: View {
     }
 }
 
-struct RecipeToAdd: Identifiable {
+struct TemporaryRecipeState: Identifiable {
     var name = ""
     var url = ""
     var categoryName = ""

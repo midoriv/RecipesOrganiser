@@ -12,7 +12,7 @@ struct AddView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
     
-    @State var recipe: RecipeToAdd
+    @State var recipe: TemporaryRecipeState
     
     var body: some View {
         List {
