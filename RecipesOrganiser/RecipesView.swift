@@ -21,11 +21,11 @@ struct RecipesView: View {
     @State var selectedRecipe: Recipe?
     
     @State private var editMode: EditMode = .inactive
-    @State private var isEditViewPresented = false {
-        didSet {
-            print("isEdit: \(oldValue) -> \(isEditViewPresented) -- name: \(name)")
-        }
-    }
+//    @State private var isEditViewPresented = false {
+//        didSet {
+//            print("isEdit: \(oldValue) -> \(isEditViewPresented) -- name: \(name)")
+//        }
+//    }
     @State var idToEdit: UUID?
     
     var body: some View {
@@ -59,7 +59,6 @@ struct RecipesView: View {
                 }, content: { recipe in
                     NavigationView {
                         EditView(editMode: $editMode, recipe: recipe)
-                            
                     }
                 })
                 .environment(\.editMode, $editMode)

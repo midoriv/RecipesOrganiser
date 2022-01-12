@@ -44,8 +44,10 @@ struct EditView: View {
     
     var saveEditButton: some View {
         Button("Save") {
-            Recipe.update(id: recipe.id!, name: recipe.name, url: recipe.url, categoryName: recipe.category.name, in: viewContext)
             editMode = .inactive
+            
+            Recipe.update(id: recipe.id!, name: recipe.name, url: recipe.url, categoryName: recipe.category.name, in: viewContext)
+            
             dismiss()
         }
         .disabled(recipe.name.isEmpty || recipe.url.isEmpty || recipe.category.name.isEmpty)
