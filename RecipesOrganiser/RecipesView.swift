@@ -18,8 +18,14 @@ struct RecipesView: View {
     @State var url = ""
     @State var categoryName = ""
     
+    @State var selectedRecipe: Recipe?
+    
     @State private var editMode: EditMode = .inactive
-    @State private var isEditViewPresented = false
+    @State private var isEditViewPresented = false {
+        didSet {
+            print("isEdit: \(oldValue) -> \(isEditViewPresented) -- name: \(name)")
+        }
+    }
     @State var idToEdit: UUID?
     
     var body: some View {
@@ -48,16 +54,14 @@ struct RecipesView: View {
                             }, trailing: saveButton)
                     }
                 }
-                .fullScreenCover(isPresented: $isEditViewPresented) {
+                .fullScreenCover(item: $selectedRecipe, onDismiss: {
+                    self.selectedRecipe = nil
+                }, content: { recipe in
                     NavigationView {
-                        EditView(name: $name, url: $url, categoryName: $categoryName)
-                            .navigationTitle("Edit Recipe")
-                            .navigationBarItems(leading: Button("Cancel") {
-                                isEditViewPresented = false
-                                editMode = .inactive
-                            }, trailing: saveEditButton)
+                        EditView(editMode: $editMode, recipe: recipe)
+                            
                     }
-                }
+                })
                 .environment(\.editMode, $editMode)
             }
         }
@@ -65,12 +69,9 @@ struct RecipesView: View {
     
     // returns a gesture to occur when RecipeRowView is tapped during edit mode
     func tap(on recipe: Recipe) -> some Gesture {
-        TapGesture().onEnded {
-            isEditViewPresented = true
-            name = recipe.name
-            url = recipe.url
-            categoryName = recipe.category.name
+        TapGesture(count: 1).onEnded {
             idToEdit = recipe.id
+            selectedRecipe = recipe
         }
     }
     
@@ -95,7 +96,8 @@ struct RecipesView: View {
                 NavigationView {
                     AddView(name: $name, url: $url, categoryName: $categoryName)
                         .navigationTitle("Add Favourite Recipe")
-                        .navigationBarItems(leading: Button("Cancel") {
+                        .navigationBarItems(
+                            leading: Button("Cancel") {
                             isAddViewPresented = false
                         }, trailing: saveButton)
                 }
@@ -126,6 +128,8 @@ struct RecipesView: View {
     
     var saveButton: some View {
         Button("Save") {
+            editMode = .inactive
+            
             Recipe.add(name: name, url: url, categoryName: categoryName, in: viewContext)
             name = ""
             url = ""
@@ -133,20 +137,6 @@ struct RecipesView: View {
             isAddViewPresented = false
         }
         .disabled(name.isEmpty || url.isEmpty || categoryName.isEmpty)
-    }
-    
-    var saveEditButton: some View {
-        Button("Save") {
-            editMode = .inactive
-            
-            Recipe.update(id: idToEdit!, name: name, url: url, categoryName: categoryName, in: viewContext)
-            
-            isEditViewPresented = false
-            idToEdit = nil
-            name = ""
-            url = ""
-            categoryName = ""
-        }
     }
     
     func removeRecipe(at offsets: IndexSet) {
