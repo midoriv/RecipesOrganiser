@@ -14,8 +14,7 @@ struct RecipesView: View {
     @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
     
     @State var recipeToAdd: RecipeToAdd?
-    @State var selectedRecipe: Recipe?
-    
+    @State var recipeToEdit: RecipeToAdd?
     @State private var editMode: EditMode = .inactive
     @State var idToEdit: UUID?
     
@@ -43,11 +42,11 @@ struct RecipesView: View {
                         AddView(recipe: recipe)
                     }
                 })
-                .fullScreenCover(item: $selectedRecipe, onDismiss: {
-                    self.selectedRecipe = nil
+                .fullScreenCover(item: $recipeToEdit, onDismiss: {
+                    self.recipeToEdit = nil
                 }, content: { recipe in
                     NavigationView {
-                        EditView(editMode: $editMode, recipe: RecipeToAdd(name: recipe.name, url: recipe.url, categoryName: recipe.category.name, id: recipe.id!))
+                        EditView(editMode: $editMode, recipe: recipe)
                     }
                 })
                 .environment(\.editMode, $editMode)
@@ -59,7 +58,7 @@ struct RecipesView: View {
     func tap(on recipe: Recipe) -> some Gesture {
         TapGesture(count: 1).onEnded {
             idToEdit = recipe.id
-            selectedRecipe = recipe
+            recipeToEdit = RecipeToAdd(name: recipe.name, url: recipe.url, categoryName: recipe.category.name, id: recipe.id!)
         }
     }
     
