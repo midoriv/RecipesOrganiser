@@ -51,6 +51,7 @@ struct RecipesView: View {
                 })
                 .environment(\.editMode, $editMode)
             }
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
     
