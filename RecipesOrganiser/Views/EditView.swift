@@ -11,7 +11,6 @@ struct EditView: View {
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
-    
     @Binding var editMode: EditMode
     @State var recipe: TemporaryRecipeState
     

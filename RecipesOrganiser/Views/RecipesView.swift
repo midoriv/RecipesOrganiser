@@ -74,7 +74,6 @@ struct RecipesView: View {
                     .bold()
                     .foregroundColor(.white)
                 Text("Let's add your favourite recipes!")
-                
                 addRecipeButton
             }
             .fullScreenCover(item: $recipeToAdd, onDismiss: {

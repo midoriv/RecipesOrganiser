@@ -11,7 +11,6 @@ struct AddView: View {
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
-    
     @State var recipe: TemporaryRecipeState
     
     var body: some View {
@@ -36,10 +35,7 @@ struct AddView: View {
     
     var saveButton: some View {
         Button("Save") {
-//            editMode = .inactive
-            
             Recipe.add(name: recipe.name, url: recipe.url, categoryName: recipe.categoryName, in: viewContext)
-            
             dismiss()
         }
         .disabled(recipe.name.isEmpty || recipe.url.isEmpty || recipe.categoryName.isEmpty)
