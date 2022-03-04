@@ -27,7 +27,7 @@ class RecipesOrganiserViewModel: ObservableObject {
     }
     
     private func loadDefaultCategories() {
-        print ("Load built-in categories")
+        print("Load built-in categories")
         let categoryNames = [
             "Breakfast", "Brunch", "Lunch", "Dinner", "Snacks", "Appetisers", "Soups", "Salads", "Sides", "Pizza", "Pasta",
             "Noodles", "Rice"

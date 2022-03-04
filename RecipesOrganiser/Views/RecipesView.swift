@@ -10,6 +10,7 @@ import CoreData
 
 struct RecipesView: View {
     @EnvironmentObject var viewModel: RecipesOrganiserViewModel
+    @ObservedObject var errorManager: ErrorManager
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
     
@@ -17,41 +18,46 @@ struct RecipesView: View {
     @State var recipeToAdd: ModifiableRecipe?
     @State var recipeToEdit: ModifiableRecipe?
     @State var idToEdit: UUID?
-    
+
     var body: some View {
-        if recipes.isEmpty {
-            EmptyView(recipeToAdd: $recipeToAdd)
+        if errorManager.errorOccurrence {
+            Text("Error Occurred.")
         }
         else {
-            NavigationView {
-                List {
-                    ForEach(recipes) { recipe in
-                        NavigationLink(destination: RecipeWebView(urlStr: recipe.url)) {
-                            RecipeRowView(recipe: recipe)
-                                .gesture(editMode == .active ? tapToEdit(on: recipe) : nil)
-                        }
-                    }
-                    .onDelete(perform: removeRecipe)
-                }
-                .navigationTitle("Favourite Recipes")
-                .navigationBarItems(leading: EditButton(), trailing: addButton)
-                .fullScreenCover(item: $recipeToAdd, onDismiss: {
-                    self.recipeToAdd = nil
-                }, content: { recipe in
-                    NavigationView {
-                        AddView(recipe: recipe)
-                    }
-                })
-                .fullScreenCover(item: $recipeToEdit, onDismiss: {
-                    self.recipeToEdit = nil
-                }, content: { recipe in
-                    NavigationView {
-                        EditView(editMode: $editMode, recipe: recipe)
-                    }
-                })
-                .environment(\.editMode, $editMode)
+            if recipes.isEmpty {
+                EmptyView(recipeToAdd: $recipeToAdd)
             }
-            .navigationViewStyle(StackNavigationViewStyle())
+            else {
+                NavigationView {
+                    List {
+                        ForEach(recipes) { recipe in
+                            NavigationLink(destination: RecipeWebView(urlStr: recipe.url)) {
+                                RecipeRowView(recipe: recipe)
+                                .gesture(editMode == .active ? tapToEdit(on: recipe) : nil)
+                            }
+                        }
+                        .onDelete(perform: removeRecipe)
+                    }
+                    .navigationTitle("Favourite Recipes")
+                    .navigationBarItems(leading: EditButton(), trailing: addButton)
+                    .fullScreenCover(item: $recipeToAdd, onDismiss: {
+                        self.recipeToAdd = nil
+                    }, content: { recipe in
+                        NavigationView {
+                            AddView(recipe: recipe)
+                        }
+                    })
+                    .fullScreenCover(item: $recipeToEdit, onDismiss: {
+                        self.recipeToEdit = nil
+                    }, content: { recipe in
+                        NavigationView {
+                            EditView(editMode: $editMode, recipe: recipe)
+                        }
+                    })
+                    .environment(\.editMode, $editMode)
+                }
+                .navigationViewStyle(StackNavigationViewStyle())
+            }
         }
     }
     
@@ -87,5 +93,3 @@ struct RecipesView: View {
         }
     }
 }
-
-

@@ -10,10 +10,10 @@ import SwiftUI
 @main
 struct RecipesOrganiserApp: App {
     let persistenceController = PersistenceController.shared
-
+    
     var body: some Scene {
         WindowGroup {
-            RecipesView()
+            RecipesView(errorManager: persistenceController.errorManager)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(RecipesOrganiserViewModel(context: persistenceController.container.viewContext))    
         }
