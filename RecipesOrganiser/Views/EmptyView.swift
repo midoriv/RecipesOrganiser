@@ -9,7 +9,7 @@ import SwiftUI
 
 // Shown when no recipe has been added
 struct EmptyView: View {
-    @Binding var recipeToAdd: TemporaryRecipeState?
+    @Binding var recipeToAdd: ModifiableRecipe?
     
     var body: some View {
         ZStack {
@@ -35,7 +35,7 @@ struct EmptyView: View {
     
     private var addRecipeButton: some View {
         Button(action: {
-            recipeToAdd = TemporaryRecipeState()
+            recipeToAdd = ModifiableRecipe()
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: 16)
@@ -50,6 +50,6 @@ struct EmptyView: View {
 
 struct EmptyView_Previews: PreviewProvider {
     static var previews: some View {
-        return EmptyView(recipeToAdd: .constant(TemporaryRecipeState()))
+        return EmptyView(recipeToAdd: .constant(ModifiableRecipe()))
     }
 }

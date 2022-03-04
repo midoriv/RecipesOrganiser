@@ -11,7 +11,7 @@ struct AddView: View {
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
-    @State var recipe: TemporaryRecipeState
+    @State var recipe: ModifiableRecipe
     
     var body: some View {
         List {

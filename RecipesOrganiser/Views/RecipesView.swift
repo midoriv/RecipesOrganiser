@@ -13,8 +13,8 @@ struct RecipesView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
     
-    @State var recipeToAdd: TemporaryRecipeState?
-    @State var recipeToEdit: TemporaryRecipeState?
+    @State var recipeToAdd: ModifiableRecipe?
+    @State var recipeToEdit: ModifiableRecipe?
     @State private var editMode: EditMode = .inactive
     @State var idToEdit: UUID?
     
@@ -28,7 +28,7 @@ struct RecipesView: View {
                     ForEach(recipes) { recipe in
                         NavigationLink(destination: RecipeWebView(urlStr: recipe.url)) {
                             RecipeRowView(recipe: recipe)
-                                .gesture(editMode == .active ? tap(on: recipe) : nil)
+                                .gesture(editMode == .active ? tapToEdit(on: recipe) : nil)
                         }
                     }
                     .onDelete(perform: removeRecipe)
@@ -56,16 +56,21 @@ struct RecipesView: View {
     }
     
     // returns a gesture to occur when RecipeRowView is tapped during edit mode
-    func tap(on recipe: Recipe) -> some Gesture {
+    func tapToEdit(on recipe: Recipe) -> some Gesture {
         TapGesture(count: 1).onEnded {
             idToEdit = recipe.id
-            recipeToEdit = TemporaryRecipeState(name: recipe.name, url: recipe.url, categoryName: recipe.category.name, id: recipe.id!)
+            recipeToEdit = ModifiableRecipe(
+                name: recipe.name,
+                url: recipe.url,
+                categoryName: recipe.category.name,
+                id: recipe.id!
+            )
         }
     }
     
     var addButton: some View {
         Button(action: {
-            recipeToAdd = TemporaryRecipeState()
+            recipeToAdd = ModifiableRecipe()
         }) {
             Image(systemName: "plus")
         }
@@ -83,7 +88,7 @@ struct RecipesView: View {
     }
 }
 
-struct TemporaryRecipeState: Identifiable {
+struct ModifiableRecipe: Identifiable {
     var name = ""
     var url = ""
     var categoryName = ""

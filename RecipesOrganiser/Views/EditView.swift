@@ -12,7 +12,7 @@ struct EditView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
     @Binding var editMode: EditMode
-    @State var recipe: TemporaryRecipeState
+    @State var recipe: ModifiableRecipe
     
     var body: some View {
         List {
