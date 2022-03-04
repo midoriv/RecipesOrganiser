@@ -20,7 +20,7 @@ struct RecipesView: View {
     
     var body: some View {
         if recipes.isEmpty {
-            emptyView
+            EmptyView(recipeToAdd: $recipeToAdd)
         }
         else {
             NavigationView {
@@ -60,43 +60,6 @@ struct RecipesView: View {
         TapGesture(count: 1).onEnded {
             idToEdit = recipe.id
             recipeToEdit = TemporaryRecipeState(name: recipe.name, url: recipe.url, categoryName: recipe.category.name, id: recipe.id!)
-        }
-    }
-    
-    // Shown when no recipe has been added
-    var emptyView: some View {
-        ZStack {
-            Color.cyan
-            
-            VStack(alignment: .center, spacing: 20) {
-                Text("No Recipe")
-                    .font(.title)
-                    .bold()
-                    .foregroundColor(.white)
-                Text("Let's add your favourite recipes!")
-                addRecipeButton
-            }
-            .fullScreenCover(item: $recipeToAdd, onDismiss: {
-                self.recipeToAdd = nil
-            }, content: { recipe in
-                NavigationView {
-                    AddView(recipe: recipe) 
-                }
-            })
-        }
-    }
-    
-    var addRecipeButton: some View {
-        Button(action: {
-            recipeToAdd = TemporaryRecipeState()
-        }) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 16)
-                    .foregroundColor(.white)
-                Text("Add Recipe")
-                    .foregroundColor(.cyan)
-            }
-            .frame(width: 120, height: 40)
         }
     }
     
