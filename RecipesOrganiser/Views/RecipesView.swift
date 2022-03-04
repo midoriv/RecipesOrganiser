@@ -13,9 +13,9 @@ struct RecipesView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
     
+    @State private var editMode: EditMode = .inactive
     @State var recipeToAdd: ModifiableRecipe?
     @State var recipeToEdit: ModifiableRecipe?
-    @State private var editMode: EditMode = .inactive
     @State var idToEdit: UUID?
     
     var body: some View {
@@ -88,9 +88,4 @@ struct RecipesView: View {
     }
 }
 
-struct ModifiableRecipe: Identifiable {
-    var name = ""
-    var url = ""
-    var categoryName = ""
-    var id = UUID()
-}
+
