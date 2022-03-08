@@ -18,24 +18,14 @@ class RecipesOrganiserViewModel: ObservableObject {
         if Category.categoriesCount(context: context) == 0 {
             loadDefaultCategories()
         }
-        else {
-            print("Categories have already been loaded")
-            
-            // delete all
-//            Category.deleteAll(context: context)
-        }
     }
     
     private func loadDefaultCategories() {
         print("Load built-in categories")
-        let categoryNames = [
-            "Breakfast", "Brunch", "Lunch", "Dinner", "Snacks", "Appetisers", "Soups", "Salads", "Sides", "Pizza", "Pasta",
-            "Noodles", "Rice"
-        ]
+        let categoryNames = ["Breakfast", "Lunch", "Dinner", "Snacks", "Appetisers", "Soups", "Salads", "Pasta", "Noodles", "Rice"]
         
         for name in categoryNames {
             Category.add(name: name, in: context)
         }
     }
 }
-
