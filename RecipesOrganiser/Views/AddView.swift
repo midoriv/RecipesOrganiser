@@ -44,7 +44,7 @@ struct AddView: View {
             self.customisePresented = false
         }, content: {
             NavigationView {
-                Text("test")
+                CustomiseCategoriesView()
                     .navigationBarItems(leading: Button("Cancel") {
                         customisePresented = false
                     }, trailing: Button("Done") {
