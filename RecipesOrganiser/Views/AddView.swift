@@ -44,12 +44,7 @@ struct AddView: View {
             self.customisePresented = false
         }, content: {
             NavigationView {
-                CustomiseCategoriesView()
-                    .navigationBarItems(leading: Button("Cancel") {
-                        customisePresented = false
-                    }, trailing: Button("Done") {
-                        customisePresented = false
-                    })
+                CustomiseCategoriesView(customisePresented: $customisePresented)
             }
         })
     }
