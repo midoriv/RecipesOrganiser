@@ -12,6 +12,7 @@ struct AddView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
     @State var recipe: ModifiableRecipe
+    @State var customisePresented = false
     
     var body: some View {
         List {
@@ -26,11 +27,31 @@ struct AddView: View {
                     Text(category.name)
                 }
             })
+            Section {
+                Button(action: {
+                    customisePresented = true
+                }) {
+                    Label("Customise Categories", systemImage: "gearshape")
+                }
+            }
+            .listRowBackground(Color(.systemGray6))
         }
         .navigationTitle("Add Favourite Recipe")
         .navigationBarItems(leading: Button("Cancel") {
             dismiss()
         }, trailing: saveButton)
+        .fullScreenCover(isPresented: $customisePresented, onDismiss: {
+            self.customisePresented = false
+        }, content: {
+            NavigationView {
+                Text("test")
+                    .navigationBarItems(leading: Button("Cancel") {
+                        customisePresented = false
+                    }, trailing: Button("Done") {
+                        customisePresented = false
+                    })
+            }
+        })
     }
     
     var saveButton: some View {
