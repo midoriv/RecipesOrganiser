@@ -24,6 +24,7 @@ struct CustomiseCategoriesView: View {
                 ForEach(categories, id: \.name) { category in
                     Text(category.name)
                 }
+                .onDelete(perform: removeCategory)
             }
         }
         .navigationBarTitle("Categories")
@@ -37,6 +38,17 @@ struct CustomiseCategoriesView: View {
             }
             .disabled(newCategoryName.isEmpty)
         )
+    }
+    
+    func removeCategory(at offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                let toDelete = categories[index]
+                viewContext.delete(toDelete)
+                try? viewContext.save()
+                print("Category deleted.")
+            }
+        }
     }
 }
 
