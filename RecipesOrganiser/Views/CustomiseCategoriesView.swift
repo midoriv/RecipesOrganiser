@@ -12,6 +12,7 @@ struct CustomiseCategoriesView: View {
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
     @Binding var customisePresented: Bool
     @State var newCategoryName = ""
+    @State var deleteError = false
     
     var body: some View {
         List {
@@ -44,9 +45,17 @@ struct CustomiseCategoriesView: View {
         withAnimation {
             for index in offsets {
                 let toDelete = categories[index]
-                viewContext.delete(toDelete)
-                try? viewContext.save()
-                print("Category deleted.")
+                
+                // if there exists a recipe that falls under this category
+                if toDelete.recipes.count == 0 {
+                    viewContext.delete(toDelete)
+                    try? viewContext.save()
+                    print("Category deleted.")
+                    
+                }
+                else {
+                    deleteError = true
+                }
             }
         }
     }
