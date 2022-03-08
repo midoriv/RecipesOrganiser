@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct CustomiseCategoriesView: View {
+    @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
     @Binding var customisePresented: Bool
     @State var newCategoryName = ""
     
     var body: some View {
         List {
-            Section(header: Text("New Category")) {
+            Section(header: Text("Add New Category")) {
                 TextField(text: $newCategoryName, prompt: Text("Category Name")) {
                     Text(newCategoryName)
                 }
@@ -30,7 +31,8 @@ struct CustomiseCategoriesView: View {
             leading: Button("Cancel") {
                 customisePresented = false
             },
-            trailing: Button("Done") {
+            trailing: Button("Save") {
+                Category.add(name: newCategoryName, in: viewContext)
                 customisePresented = false
             }
             .disabled(newCategoryName.isEmpty)
