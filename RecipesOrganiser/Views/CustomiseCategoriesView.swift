@@ -81,7 +81,7 @@ struct MessageSheet: View {
             .opacity(0.7)
             .overlay(messageBox)
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     newCategoryName = ""
                     messagePresented.toggle()
                 }
@@ -89,11 +89,13 @@ struct MessageSheet: View {
     }
     
     var messageBox: some View {
-        Text("Added category \(newCategoryName)")
-            .padding([.top, .bottom], 30)
-            .padding([.leading, .trailing], 40)
-            .background(.white)
-            .cornerRadius(15)
+        Group {
+            Text("Added category ") + Text("\(newCategoryName)").bold()
+        }
+        .padding([.top, .bottom], 30)
+        .padding([.leading, .trailing], 40)
+        .background(.white)
+        .cornerRadius(15)
     }
 }
 
