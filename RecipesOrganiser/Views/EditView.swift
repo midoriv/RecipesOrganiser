@@ -29,7 +29,7 @@ struct EditView: View {
             Section(header: Text("Category")) {
                 Picker("Category", selection: $recipe.categoryName, content: {
                     ForEach(categories, id: \.name) { category in
-                        Text(recipe.categoryName)
+                        Text(category.name)
                     }
                 })
             }
