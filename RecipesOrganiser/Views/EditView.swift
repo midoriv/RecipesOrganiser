@@ -13,6 +13,7 @@ struct EditView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var editMode: EditMode
     @State var recipe: ModifiableRecipe
+    @State var customisePresented = false
     
     var body: some View {
         List {
@@ -33,12 +34,27 @@ struct EditView: View {
                     }
                 })
             }
+            Section {
+                Button(action: {
+                    customisePresented = true
+                }) {
+                    Label("Customise Categories", systemImage: "gearshape")
+                }
+            }
+            .listRowBackground(Color(.systemGray6))
         }
         .navigationTitle("Edit Recipe")
         .navigationBarItems(leading: Button("Cancel") {
             editMode = .inactive
             dismiss()
         }, trailing: saveEditButton)
+        .fullScreenCover(isPresented: $customisePresented, onDismiss: {
+            self.customisePresented = false
+        }, content: {
+            NavigationView {
+                CustomiseCategoriesView(customisePresented: $customisePresented)
+            }
+        })
     }
     
     var saveEditButton: some View {
