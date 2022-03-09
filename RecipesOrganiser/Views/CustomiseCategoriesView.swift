@@ -37,7 +37,6 @@ struct CustomiseCategoriesView: View {
             trailing: Button("Save") {
                 Category.add(name: newCategoryName, in: viewContext)
                 messagePresented = true
-                newCategoryName = ""
             }
             .disabled(newCategoryName.isEmpty)
         )
@@ -50,7 +49,7 @@ struct CustomiseCategoriesView: View {
                 })
             )
         }
-        .overlay(messagePresented ? MessageSheet(messagePresented: $messagePresented) : nil)
+        .overlay(messagePresented ? MessageSheet(messagePresented: $messagePresented, newCategoryName: $newCategoryName) : nil)
     }
     
     func removeCategory(at offsets: IndexSet) {
@@ -74,21 +73,23 @@ struct CustomiseCategoriesView: View {
 
 struct MessageSheet: View {
     @Binding var messagePresented: Bool
+    @Binding var newCategoryName: String
     
     var body: some View {
-        Color.black
+        Color.gray
             .navigationBarHidden(true)
-            .opacity(0.5)
+            .opacity(0.7)
             .overlay(messageBox)
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    newCategoryName = ""
                     messagePresented.toggle()
                 }
             }
     }
     
     var messageBox: some View {
-        Text("Saved")
+        Text("Added category \(newCategoryName)")
             .padding([.top, .bottom], 30)
             .padding([.leading, .trailing], 40)
             .background(.white)
