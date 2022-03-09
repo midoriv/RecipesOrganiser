@@ -11,8 +11,9 @@ struct CustomiseCategoriesView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
     @Binding var customisePresented: Bool
-    @State var newCategoryName = ""
-    @State var alertPresented = false
+    @State private var newCategoryName = ""
+    @State private var alertPresented = false
+    @State private var messagePresented = false
     
     var body: some View {
         List {
@@ -35,7 +36,8 @@ struct CustomiseCategoriesView: View {
             },
             trailing: Button("Save") {
                 Category.add(name: newCategoryName, in: viewContext)
-                customisePresented = false
+                messagePresented = true
+                newCategoryName = ""
             }
             .disabled(newCategoryName.isEmpty)
         )
@@ -48,6 +50,7 @@ struct CustomiseCategoriesView: View {
                 })
             )
         }
+        .overlay(messagePresented ? MessageSheet(messagePresented: $messagePresented) : nil)
     }
     
     func removeCategory(at offsets: IndexSet) {
@@ -66,6 +69,30 @@ struct CustomiseCategoriesView: View {
                 }
             }
         }
+    }
+}
+
+struct MessageSheet: View {
+    @Binding var messagePresented: Bool
+    
+    var body: some View {
+        Color.black
+            .navigationBarHidden(true)
+            .opacity(0.5)
+            .overlay(messageBox)
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    messagePresented.toggle()
+                }
+            }
+    }
+    
+    var messageBox: some View {
+        Text("Saved")
+            .padding([.top, .bottom], 30)
+            .padding([.leading, .trailing], 40)
+            .background(.white)
+            .cornerRadius(15)
     }
 }
 
