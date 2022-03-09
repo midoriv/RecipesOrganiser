@@ -12,7 +12,7 @@ struct CustomiseCategoriesView: View {
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
     @Binding var customisePresented: Bool
     @State var newCategoryName = ""
-    @State var deleteError = false
+    @State var alertPresented = false
     
     var body: some View {
         List {
@@ -39,6 +39,15 @@ struct CustomiseCategoriesView: View {
             }
             .disabled(newCategoryName.isEmpty)
         )
+        .alert(isPresented: $alertPresented) {
+            Alert(
+                title: Text("Can't delete the category"),
+                message: Text("There is a recipe under the category."),
+                dismissButton: .default(Text("OK"), action: {
+                    alertPresented = false
+                })
+            )
+        }
     }
     
     func removeCategory(at offsets: IndexSet) {
@@ -51,10 +60,9 @@ struct CustomiseCategoriesView: View {
                     viewContext.delete(toDelete)
                     try? viewContext.save()
                     print("Category deleted.")
-                    
                 }
                 else {
-                    deleteError = true
+                    alertPresented = true
                 }
             }
         }
