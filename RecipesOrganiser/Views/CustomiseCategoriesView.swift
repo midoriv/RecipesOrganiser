@@ -63,7 +63,7 @@ struct CustomiseCategoriesView: View {
         })
         .overlay(
             showingAddSuccessMessage ?
-            MessageSheet(showingAddSuccessMessage: $showingAddSuccessMessage, newCategoryName: $newCategoryName) : nil
+            SuccessMessageSheet(showingAddSuccessMessage: $showingAddSuccessMessage, newCategoryName: $newCategoryName) : nil
         )
     }
     
@@ -86,7 +86,7 @@ struct CustomiseCategoriesView: View {
     }
 }
 
-struct MessageSheet: View {
+struct SuccessMessageSheet: View {
     @Binding var showingAddSuccessMessage: Bool
     @Binding var newCategoryName: String
     
