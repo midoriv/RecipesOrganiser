@@ -14,6 +14,7 @@ struct CustomiseCategoriesView: View {
     @State private var newCategoryName = ""
     @State private var showingDeletionAlert = false
     @State private var showingAdditionAlert = false
+    @State private var showingLimitAlert = false
     @State private var showingAddSuccessMessage = false
     
     var body: some View {
@@ -35,17 +36,7 @@ struct CustomiseCategoriesView: View {
             leading: Button("Cancel") {
                 customisePresented = false
             },
-            trailing: Button("Save") {
-                // if the entered category doesn't exit yet
-                if Category.withName(newCategoryName, context: viewContext) == nil {
-                    Category.add(name: newCategoryName, in: viewContext)
-                    showingAddSuccessMessage = true
-                }
-                else {
-                    showingAdditionAlert = true
-                }
-            }
-            .disabled(newCategoryName.isEmpty)
+            trailing: saveButton
         )
         .alert("Can't delete the category", isPresented: $showingDeletionAlert, actions: {
             Button("OK") {
@@ -61,10 +52,37 @@ struct CustomiseCategoriesView: View {
         }, message: {
             Text("The category already exists.")
         })
+        .alert("Limit Reached", isPresented: $showingLimitAlert, actions: {
+            Button("OK") {
+                showingLimitAlert = false
+            }
+        }, message: {
+            Text("Maximum categories limit of 30 has been reached.")
+        })
         .overlay(
             showingAddSuccessMessage ?
             SuccessMessageSheet(showingAddSuccessMessage: $showingAddSuccessMessage, newCategoryName: $newCategoryName) : nil
         )
+    }
+    
+    // a button to save / add a new category
+    private var saveButton: some View {
+        Button("Save") {
+            // alert case 1: limit reached
+            if categories.count >= 30 {
+                showingLimitAlert = true
+            }
+            // alert case 2: the category already exits
+            else if Category.withName(newCategoryName, context: viewContext) != nil {
+                showingAdditionAlert = true
+            }
+            else {
+                Category.add(name: newCategoryName, in: viewContext)
+                showingAddSuccessMessage = true
+            }
+            
+        }
+        .disabled(newCategoryName.isEmpty)
     }
     
     func removeCategory(at offsets: IndexSet) {
