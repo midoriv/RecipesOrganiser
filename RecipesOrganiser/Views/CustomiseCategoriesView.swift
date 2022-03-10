@@ -12,8 +12,9 @@ struct CustomiseCategoriesView: View {
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
     @Binding var customisePresented: Bool
     @State private var newCategoryName = ""
-    @State private var alertPresented = false
-    @State private var messagePresented = false
+    @State private var showingDeletionAlert = false
+    @State private var showingAdditionAlert = false
+    @State private var showingAddSuccessMessage = false
     
     var body: some View {
         List {
@@ -35,21 +36,35 @@ struct CustomiseCategoriesView: View {
                 customisePresented = false
             },
             trailing: Button("Save") {
-                Category.add(name: newCategoryName, in: viewContext)
-                messagePresented = true
+                // if the entered category doesn't exit yet
+                if Category.withName(newCategoryName, context: viewContext) == nil {
+                    Category.add(name: newCategoryName, in: viewContext)
+                    showingAddSuccessMessage = true
+                }
+                else {
+                    showingAdditionAlert = true
+                }
             }
             .disabled(newCategoryName.isEmpty)
         )
-        .alert(isPresented: $alertPresented) {
-            Alert(
-                title: Text("Can't delete the category"),
-                message: Text("There is a recipe under the category."),
-                dismissButton: .default(Text("OK"), action: {
-                    alertPresented = false
-                })
-            )
-        }
-        .overlay(messagePresented ? MessageSheet(messagePresented: $messagePresented, newCategoryName: $newCategoryName) : nil)
+        .alert("Can't delete the category", isPresented: $showingDeletionAlert, actions: {
+            Button("OK") {
+                showingDeletionAlert = false
+            }
+        }, message: {
+            Text("There is a recipe under the category.")
+        })
+        .alert("Can't add the category", isPresented: $showingAdditionAlert, actions: {
+            Button("OK") {
+                showingDeletionAlert = false
+            }
+        }, message: {
+            Text("The category already exists.")
+        })
+        .overlay(
+            showingAddSuccessMessage ?
+            MessageSheet(showingAddSuccessMessage: $showingAddSuccessMessage, newCategoryName: $newCategoryName) : nil
+        )
     }
     
     func removeCategory(at offsets: IndexSet) {
@@ -64,7 +79,7 @@ struct CustomiseCategoriesView: View {
                     print("Category deleted.")
                 }
                 else {
-                    alertPresented = true
+                    showingDeletionAlert = true
                 }
             }
         }
@@ -72,7 +87,7 @@ struct CustomiseCategoriesView: View {
 }
 
 struct MessageSheet: View {
-    @Binding var messagePresented: Bool
+    @Binding var showingAddSuccessMessage: Bool
     @Binding var newCategoryName: String
     
     var body: some View {
@@ -83,7 +98,7 @@ struct MessageSheet: View {
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     newCategoryName = ""
-                    messagePresented.toggle()
+                    showingAddSuccessMessage.toggle()
                 }
             }
     }
