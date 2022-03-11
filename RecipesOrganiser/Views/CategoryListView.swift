@@ -21,7 +21,6 @@ struct CategoryListView: View {
             }
             .navigationTitle("Category")
         }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
