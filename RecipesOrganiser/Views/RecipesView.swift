@@ -59,7 +59,7 @@ struct MainView: View {
                 }
                 .onDelete(perform: removeRecipe)
             }
-            .navigationTitle("Favourite Recipes")
+            .navigationTitle("All Recipes")
             .navigationBarItems(leading: EditButton(), trailing: addButton)
             .fullScreenCover(item: $recipeToAdd, onDismiss: {
                 self.recipeToAdd = nil
