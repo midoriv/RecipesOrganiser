@@ -11,10 +11,17 @@ struct RecipesByCategoryView: View {
     var category: Category
     
     var body: some View {
-        List {
-            ForEach(Array(category.recipes)) { recipe in
-                NavigationLink(destination: RecipeWebView(urlStr: recipe.url)) {
-                    RecipeRowView(recipe: recipe)
+        Group {
+            if category.recipes.isEmpty {
+                Text("No recipe under this category.")
+            }
+            else {
+                List {
+                    ForEach(Array(category.recipes)) { recipe in
+                        NavigationLink(destination: RecipeWebView(urlStr: recipe.url)) {
+                            RecipeRowView(recipe: recipe)
+                        }
+                    }
                 }
             }
         }
