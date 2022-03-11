@@ -11,14 +11,9 @@ import CoreData
 struct RecipesView: View {
     @EnvironmentObject var viewModel: RecipesOrganiserViewModel
     @ObservedObject var errorManager: ErrorManager
-    @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
-    
-    @State private var editMode: EditMode = .inactive
     @State var recipeToAdd: ModifiableRecipe?
-    @State var recipeToEdit: ModifiableRecipe?
-    @State var idToEdit: UUID?
-
+    
     var body: some View {
         if errorManager.errorOccurrence {
             Text("Error Occurred.")
@@ -28,37 +23,50 @@ struct RecipesView: View {
                 EmptyView(recipeToAdd: $recipeToAdd)
             }
             else {
-                NavigationView {
-                    List {
-                        ForEach(recipes) { recipe in
-                            NavigationLink(destination: RecipeWebView(urlStr: recipe.url)) {
-                                RecipeRowView(recipe: recipe)
-                                .gesture(editMode == .active ? tapToEdit(on: recipe) : nil)
-                            }
-                        }
-                        .onDelete(perform: removeRecipe)
-                    }
-                    .navigationTitle("Favourite Recipes")
-                    .navigationBarItems(leading: EditButton(), trailing: addButton)
-                    .fullScreenCover(item: $recipeToAdd, onDismiss: {
-                        self.recipeToAdd = nil
-                    }, content: { recipe in
-                        NavigationView {
-                            AddView(recipe: recipe)
-                        }
-                    })
-                    .fullScreenCover(item: $recipeToEdit, onDismiss: {
-                        self.recipeToEdit = nil
-                    }, content: { recipe in
-                        NavigationView {
-                            EditView(editMode: $editMode, recipe: recipe)
-                        }
-                    })
-                    .environment(\.editMode, $editMode)
-                }
-                .navigationViewStyle(StackNavigationViewStyle())
+                MainView(recipeToAdd: $recipeToAdd)
             }
         }
+    }
+}
+
+struct MainView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
+    @State private var editMode: EditMode = .inactive
+    @State var recipeToEdit: ModifiableRecipe?
+    @Binding var recipeToAdd: ModifiableRecipe?
+    @State var idToEdit: UUID?
+
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(recipes) { recipe in
+                    NavigationLink(destination: RecipeWebView(urlStr: recipe.url)) {
+                        RecipeRowView(recipe: recipe)
+                        .gesture(editMode == .active ? tapToEdit(on: recipe) : nil)
+                    }
+                }
+                .onDelete(perform: removeRecipe)
+            }
+            .navigationTitle("Favourite Recipes")
+            .navigationBarItems(leading: EditButton(), trailing: addButton)
+            .fullScreenCover(item: $recipeToAdd, onDismiss: {
+                self.recipeToAdd = nil
+            }, content: { recipe in
+                NavigationView {
+                    AddView(recipe: recipe)
+                }
+            })
+            .fullScreenCover(item: $recipeToEdit, onDismiss: {
+                self.recipeToEdit = nil
+            }, content: { recipe in
+                NavigationView {
+                    EditView(editMode: $editMode, recipe: recipe)
+                }
+            })
+            .environment(\.editMode, $editMode)
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     // returns a gesture to occur when RecipeRowView is tapped during edit mode
