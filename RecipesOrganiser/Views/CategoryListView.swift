@@ -1,5 +1,5 @@
 //
-//  ByCategoryView.swift
+//  CategoryListView.swift
 //  RecipesOrganiser
 //
 //  Created by Midori Verdouw on 11/3/2022.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ByCategoryView: View {
+struct CategoryListView: View {
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
     
     var body: some View {
@@ -27,6 +27,6 @@ struct ByCategoryView: View {
 
 struct ByCategoryView_Previews: PreviewProvider {
     static var previews: some View {
-        ByCategoryView()
+        CategoryListView()
     }
 }

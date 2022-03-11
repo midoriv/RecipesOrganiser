@@ -30,7 +30,7 @@ struct RecipesView: View {
                             Text("First")
                         }
                         .tag(1)
-                    ByCategoryView()
+                    CategoryListView()
                         .tabItem {
                             Image(systemName: "2.circle")
                             Text("Second")
