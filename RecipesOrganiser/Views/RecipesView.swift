@@ -26,14 +26,12 @@ struct RecipesView: View {
                 TabView {
                     MainView(recipeToAdd: $recipeToAdd)
                         .tabItem {
-                            Image(systemName: "1.circle")
-                            Text("First")
+                            Label("All", systemImage: "star.circle")
                         }
                         .tag(1)
                     CategoryListView()
                         .tabItem {
-                            Image(systemName: "2.circle")
-                            Text("Second")
+                            Label("Category", systemImage: "square.grid.2x2")
                         }
                         .tag(2)
                 }

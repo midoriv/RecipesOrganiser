@@ -19,7 +19,7 @@ struct CategoryListView: View {
                     }
                 }
             }
-            .navigationTitle("Categories")
+            .navigationTitle("Category")
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
