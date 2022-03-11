@@ -23,7 +23,20 @@ struct RecipesView: View {
                 EmptyView(recipeToAdd: $recipeToAdd)
             }
             else {
-                MainView(recipeToAdd: $recipeToAdd)
+                TabView {
+                    MainView(recipeToAdd: $recipeToAdd)
+                        .tabItem {
+                            Image(systemName: "1.circle")
+                            Text("First")
+                        }
+                        .tag(1)
+                    ByCategoryView()
+                        .tabItem {
+                            Image(systemName: "2.circle")
+                            Text("Second")
+                        }
+                        .tag(2)
+                }
             }
         }
     }

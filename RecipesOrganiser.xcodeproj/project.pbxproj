@@ -21,6 +21,8 @@
 		07BFD04527869D8A00F091DD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07BFD04427869D8A00F091DD /* Preview Assets.xcassets */; };
 		07BFD04727869D8A00F091DD /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BFD04627869D8A00F091DD /* Persistence.swift */; };
 		07BFD04A27869D8A00F091DD /* RecipesOrganiser.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 07BFD04827869D8A00F091DD /* RecipesOrganiser.xcdatamodeld */; };
+		07C4B2DE27DB0B8000BBFDAB /* ByCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C4B2DD27DB0B8000BBFDAB /* ByCategoryView.swift */; };
+		07C4B2E127DB253B00BBFDAB /* RecipesByCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C4B2E027DB253B00BBFDAB /* RecipesByCategoryView.swift */; };
 		07D73587278BC484006923EB /* RecipeWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D73586278BC484006923EB /* RecipeWebView.swift */; };
 		07D7358B278BC7D4006923EB /* RecipeRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D7358A278BC7D4006923EB /* RecipeRowView.swift */; };
 		07D7358D278BE3D6006923EB /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 07D7358C278BE3D6006923EB /* .gitignore */; };
@@ -43,6 +45,8 @@
 		07BFD04427869D8A00F091DD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		07BFD04627869D8A00F091DD /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		07BFD04927869D8A00F091DD /* RecipesOrganiser.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RecipesOrganiser.xcdatamodel; sourceTree = "<group>"; };
+		07C4B2DD27DB0B8000BBFDAB /* ByCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByCategoryView.swift; sourceTree = "<group>"; };
+		07C4B2E027DB253B00BBFDAB /* RecipesByCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesByCategoryView.swift; sourceTree = "<group>"; };
 		07D73586278BC484006923EB /* RecipeWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeWebView.swift; sourceTree = "<group>"; };
 		07D7358A278BC7D4006923EB /* RecipeRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeRowView.swift; sourceTree = "<group>"; };
 		07D7358C278BE3D6006923EB /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -80,6 +84,8 @@
 				07D73590278C4438006923EB /* EditView.swift */,
 				0788460027D197EB00C29C7C /* EmptyView.swift */,
 				0709DFCB27D7010B00169AE5 /* CustomiseCategoriesView.swift */,
+				07C4B2DD27DB0B8000BBFDAB /* ByCategoryView.swift */,
+				07C4B2E027DB253B00BBFDAB /* RecipesByCategoryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -215,6 +221,7 @@
 				07BFD04727869D8A00F091DD /* Persistence.swift in Sources */,
 				0788460427D1A58E00C29C7C /* ModifiableRecipe.swift in Sources */,
 				0788460627D1C6DB00C29C7C /* ErrorManager.swift in Sources */,
+				07C4B2DE27DB0B8000BBFDAB /* ByCategoryView.swift in Sources */,
 				075421B52789C82600BDDEFD /* RecipesOrganiserViewModel.swift in Sources */,
 				07D73591278C4438006923EB /* EditView.swift in Sources */,
 				07D7358B278BC7D4006923EB /* RecipeRowView.swift in Sources */,
@@ -224,6 +231,7 @@
 				075421B32789C82600BDDEFD /* RecipesView.swift in Sources */,
 				07BFD04A27869D8A00F091DD /* RecipesOrganiser.xcdatamodeld in Sources */,
 				0709DFCC27D7010B00169AE5 /* CustomiseCategoriesView.swift in Sources */,
+				07C4B2E127DB253B00BBFDAB /* RecipesByCategoryView.swift in Sources */,
 				07BFD03E27869D8800F091DD /* RecipesOrganiserApp.swift in Sources */,
 				07D73587278BC484006923EB /* RecipeWebView.swift in Sources */,
 				075421BB2789C90400BDDEFD /* Category.swift in Sources */,

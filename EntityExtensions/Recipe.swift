@@ -22,6 +22,17 @@ extension Recipe {
         return recipe.first
     }
     
+    // find Recipes with a given category
+//    static func withCategory(_ categoryName: String, in context: NSManagedObjectContext) -> [Recipe] {
+//        if let category = Category.withName(categoryName, context: context) {
+//            let request = fetchRequest(NSPredicate(format: "category = %@", category as CVarArg))
+//            return (try? context.fetch(request)) ?? []
+//        }
+//        else {
+//            return []
+//        }
+//    }
+    
     static func update(id: UUID, name: String, url: String, categoryName: String, in context: NSManagedObjectContext) {
         if let recipe = withId(id, in: context) {
             recipe.name = name
