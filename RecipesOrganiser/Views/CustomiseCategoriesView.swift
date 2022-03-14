@@ -31,7 +31,7 @@ struct CustomiseCategoriesView: View {
                 .onDelete(perform: removeCategory)
             }
         }
-        .navigationBarTitle("Categories")
+        .navigationBarTitle("Customise Categories")
         .navigationBarItems(
             leading: Button("Cancel") {
                 customisePresented = false

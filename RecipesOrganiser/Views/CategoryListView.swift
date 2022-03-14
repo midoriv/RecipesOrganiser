@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CategoryListView: View {
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
+    @State private var showingCustomiseView = false
     
     var body: some View {
         NavigationView {
@@ -20,6 +21,22 @@ struct CategoryListView: View {
                 }
             }
             .navigationTitle("Category")
+            .navigationBarItems(trailing: customiseButton)
+            .fullScreenCover(isPresented: $showingCustomiseView, onDismiss: {
+                self.showingCustomiseView = false
+            }, content: {
+                NavigationView {
+                    CustomiseCategoriesView(customisePresented: $showingCustomiseView)
+                }
+            })
+        }
+    }
+    
+    var customiseButton: some View {
+        Button(action: {
+            showingCustomiseView = true
+        }) {
+            Image(systemName: "gearshape")
         }
     }
 }
