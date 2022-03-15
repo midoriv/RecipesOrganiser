@@ -8,6 +8,12 @@
 import CoreData
 
 extension Category {
+    // Get all categories
+    static func allCategories(in context: NSManagedObjectContext) -> [Category] {
+        let request = fetchRequest(NSPredicate(format: "TRUEPREDICATE"))
+        return (try? context.fetch(request)) ?? []
+    }
+    
     static func categoriesCount(context: NSManagedObjectContext) -> Int {
         let request = fetchRequest(NSPredicate(format: "TRUEPREDICATE"))
         let categories = (try? context.fetch(request)) ?? []
@@ -45,6 +51,25 @@ extension Category {
         category.objectWillChange.send()
         category.recipes.forEach { $0.objectWillChange.send() }
         try? context.save()
+    }
+    
+    // Delete a category at the given offsets
+    static func delete(at offsets: IndexSet, in context: NSManagedObjectContext) -> Bool {
+        let all = allCategories(in: context)
+        if !all.isEmpty {
+            for index in offsets {
+                let toDelete = all[index]
+                
+                // if there exists a recipe that falls under this category
+                if toDelete.recipes.count == 0 {
+                    context.delete(toDelete)
+                    try? context.save()
+                    print("Category deleted.")
+                    return true
+                }
+            }
+        }
+        return false
     }
     
     var name: String {
