@@ -23,6 +23,8 @@ struct SearchView: View {
             }
             .searchable(text: $searchText, prompt: "Search recipes")
             .navigationTitle("Search")
+            .overlay(searchText.isEmpty ? searchTop: nil)
+            .overlay((!searchText.isEmpty && searchResults.isEmpty) ? Text("No Results Found").font(.title3) : nil)
         }
     }
     
@@ -43,6 +45,16 @@ struct SearchView: View {
                 }
             })
             return results
+        }
+    }
+    
+    var searchTop: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 60))
+                .foregroundColor(.gray)
+            
+            Text("Search for recipes by any keywords...").font(.title3)
         }
     }
 }
