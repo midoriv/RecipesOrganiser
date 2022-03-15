@@ -34,6 +34,11 @@ struct RecipesView: View {
                             Label("Category", systemImage: "square.grid.2x2")
                         }
                         .tag(2)
+                    SearchView()
+                        .tabItem {
+                            Label("Search", systemImage: "magnifyingglass")
+                        }
+                        .tag(3)
                 }
             }
         }
