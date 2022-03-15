@@ -8,6 +8,7 @@
 import CoreData
 
 extension Recipe {
+    // Create a request for fetching Recipe data
     static func fetchRequest(_ predicate: NSPredicate) -> NSFetchRequest<Recipe> {
         let request = NSFetchRequest<Recipe>(entityName: "Recipe")
         request.sortDescriptors = [NSSortDescriptor(key: "timestamp_", ascending: true)]
@@ -28,19 +29,7 @@ extension Recipe {
         return recipe.first
     }
     
-    static func update(id: UUID, name: String, url: String, categoryName: String, in context: NSManagedObjectContext) {
-        if let recipe = withId(id, in: context) {
-            recipe.name = name
-            recipe.url = url
-            recipe.timestamp = Date()
-            if let category = Category.withName(categoryName, context: context) {
-                recipe.category = category
-            }
-            try? context.save()
-            print("Recipe updated")
-        }
-    }
-    
+    // Add a recipe with a given name, url and category
     static func add(name: String, url: String, categoryName: String, in context: NSManagedObjectContext) {
         let recipe = Recipe(context: context)
         recipe.name = name
@@ -55,6 +44,7 @@ extension Recipe {
         print("Recipe saved")
     }
     
+    // Delete a recipe at the given offsets
     static func delete(at offsets: IndexSet, in context: NSManagedObjectContext) {
         for index in offsets {
             let all = allRecipes(in: context)
@@ -64,6 +54,20 @@ extension Recipe {
                 try? context.save()
                 print("recipe deleted")
             }
+        }
+    }
+    
+    // Update the name / url / category of recipe identified by the ID
+    static func update(id: UUID, name: String, url: String, categoryName: String, in context: NSManagedObjectContext) {
+        if let recipe = withId(id, in: context) {
+            recipe.name = name
+            recipe.url = url
+            recipe.timestamp = Date()
+            if let category = Category.withName(categoryName, context: context) {
+                recipe.category = category
+            }
+            try? context.save()
+            print("Recipe updated")
         }
     }
     

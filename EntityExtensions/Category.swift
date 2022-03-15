@@ -8,35 +8,7 @@
 import CoreData
 
 extension Category {
-    // Get all categories
-    static func allCategories(in context: NSManagedObjectContext) -> [Category] {
-        let request = fetchRequest(NSPredicate(format: "TRUEPREDICATE"))
-        return (try? context.fetch(request)) ?? []
-    }
-    
-    static func categoriesCount(context: NSManagedObjectContext) -> Int {
-        let request = fetchRequest(NSPredicate(format: "TRUEPREDICATE"))
-        let categories = (try? context.fetch(request)) ?? []
-        return categories.count
-    }
-    
-    static func deleteAll(context: NSManagedObjectContext) {
-        let request = fetchRequest(NSPredicate(format: "TRUEPREDICATE"))
-        let categories = (try? context.fetch(request)) ?? []
-        for category in categories {
-            context.delete(category)
-        }
-        try? context.save()
-        print("Deleted all categories")
-    }
-    
-    // find a Category with a given name
-    static func withName(_ name: String, context: NSManagedObjectContext) -> Category? {
-        let request = fetchRequest(NSPredicate(format: "name_ = %@", name))
-        let category = (try? context.fetch(request)) ?? []
-        return category.first
-    }
-    
+    // Create a request for fetching Category data
     static func fetchRequest(_ predicate: NSPredicate) -> NSFetchRequest<Category> {
         let request = NSFetchRequest<Category>(entityName: "Category")
         request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
@@ -44,6 +16,27 @@ extension Category {
         return request
     }
     
+    // Get all categories
+    static func allCategories(in context: NSManagedObjectContext) -> [Category] {
+        let request = fetchRequest(NSPredicate(format: "TRUEPREDICATE"))
+        return (try? context.fetch(request)) ?? []
+    }
+    
+    // Get the total number of categories
+    static func categoriesCount(context: NSManagedObjectContext) -> Int {
+        let request = fetchRequest(NSPredicate(format: "TRUEPREDICATE"))
+        let categories = (try? context.fetch(request)) ?? []
+        return categories.count
+    }
+    
+    // Find a Category with a given name
+    static func withName(_ name: String, context: NSManagedObjectContext) -> Category? {
+        let request = fetchRequest(NSPredicate(format: "name_ = %@", name))
+        let category = (try? context.fetch(request)) ?? []
+        return category.first
+    }
+    
+    // Add a Category with the given name
     static func add(name: String, in context: NSManagedObjectContext) {
         let category = Category(context: context)
         category.name = name
@@ -70,6 +63,17 @@ extension Category {
             }
         }
         return false
+    }
+    
+    // Delete all categories
+    static func deleteAll(context: NSManagedObjectContext) {
+        let request = fetchRequest(NSPredicate(format: "TRUEPREDICATE"))
+        let categories = (try? context.fetch(request)) ?? []
+        for category in categories {
+            context.delete(category)
+        }
+        try? context.save()
+        print("Deleted all categories")
     }
     
     var name: String {
