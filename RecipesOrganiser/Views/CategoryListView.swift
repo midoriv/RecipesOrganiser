@@ -16,7 +16,7 @@ struct CategoryListView: View {
             List {
                 ForEach(categories, id: \.name) { category in
                     NavigationLink(destination: RecipesByCategoryView(category: category)) {
-                        Text(category.name)
+                        CategoryRowView(category: category)
                     }
                 }
             }
@@ -32,12 +32,28 @@ struct CategoryListView: View {
         }
     }
     
-    var customiseButton: some View {
+    private var customiseButton: some View {
         Button(action: {
             showingCustomiseView = true
         }) {
             Image(systemName: "gearshape")
         }
+    }
+}
+
+struct CategoryRowView: View {
+    let category: Category
+    
+    var body: some View {
+        HStack {
+            Text(category.name)
+            Spacer()
+            Text("\(category.recipes.count) recipes")
+                .font(.caption)
+                .bold()
+                .foregroundColor(category.recipes.count == 0 ? .gray : .cyan)
+        }
+        .padding()
     }
 }
 
