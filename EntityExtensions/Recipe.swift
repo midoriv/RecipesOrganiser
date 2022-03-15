@@ -15,23 +15,18 @@ extension Recipe {
         return request
     }
     
-    // find a Recipe with a given id
+    // Get all recipes
+    static func allRecipes(in context: NSManagedObjectContext) -> [Recipe] {
+        let request = fetchRequest(NSPredicate(format: "TRUEPREDICATE"))
+        return (try? context.fetch(request)) ?? []
+    }
+    
+    // Find a Recipe with a given id
     static func withId(_ id: UUID, in context: NSManagedObjectContext) -> Recipe? {
         let request = fetchRequest(NSPredicate(format: "id = %@", id as CVarArg))
         let recipe = (try? context.fetch(request)) ?? []
         return recipe.first
     }
-    
-    // find Recipes with a given category
-//    static func withCategory(_ categoryName: String, in context: NSManagedObjectContext) -> [Recipe] {
-//        if let category = Category.withName(categoryName, context: context) {
-//            let request = fetchRequest(NSPredicate(format: "category = %@", category as CVarArg))
-//            return (try? context.fetch(request)) ?? []
-//        }
-//        else {
-//            return []
-//        }
-//    }
     
     static func update(id: UUID, name: String, url: String, categoryName: String, in context: NSManagedObjectContext) {
         if let recipe = withId(id, in: context) {
@@ -58,6 +53,18 @@ extension Recipe {
         }
         try? context.save()
         print("Recipe saved")
+    }
+    
+    static func delete(at offsets: IndexSet, in context: NSManagedObjectContext) {
+        for index in offsets {
+            let all = allRecipes(in: context)
+            if !all.isEmpty {
+                let recipe = all[index]
+                context.delete(recipe)
+                try? context.save()
+                print("recipe deleted")
+            }
+        }
     }
     
     var name: String {
