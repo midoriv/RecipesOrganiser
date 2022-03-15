@@ -87,19 +87,8 @@ struct CustomiseCategoriesView: View {
     
     func removeCategory(at offsets: IndexSet) {
         withAnimation {
-            for index in offsets {
-                let toDelete = categories[index]
-                
-                // if there exists a recipe that falls under this category
-                if toDelete.recipes.count == 0 {
-                    viewContext.delete(toDelete)
-                    try? viewContext.save()
-                    print("Category deleted.")
-                }
-                else {
-                    showingDeletionAlert = true
-                }
-            }
+            // show alert if deletion failed
+            showingDeletionAlert = !Category.delete(at: offsets, in: viewContext)
         }
     }
 }
