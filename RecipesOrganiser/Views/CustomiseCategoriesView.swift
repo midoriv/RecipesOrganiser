@@ -26,7 +26,7 @@ struct CustomiseCategoriesView: View {
             }
             Section(header: Text("Your Categories")) {
                 ForEach(categories, id: \.name) { category in
-                    Text(category.name)
+                    CategoryRowView(category: category)
                 }
                 .onDelete(perform: removeCategory)
             }
