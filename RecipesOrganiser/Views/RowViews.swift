@@ -12,7 +12,7 @@ struct RecipeRowView: View {
     @ObservedObject var recipe: Recipe
     
     var body: some View {
-        if (!recipe.name.isEmpty) {
+        if !recipe.name.isEmpty {
             HStack() {
                 Text(recipe.name)
                 Spacer()
@@ -23,5 +23,21 @@ struct RecipeRowView: View {
             }
             .padding()
         }
+    }
+}
+
+struct CategoryRowView: View {
+    let category: Category
+    
+    var body: some View {
+        HStack {
+            Text(category.name)
+            Spacer()
+            Text("\(category.recipes.count) recipes")
+                .font(.caption)
+                .bold()
+                .foregroundColor(category.recipes.count == 0 ? .gray : .cyan)
+        }
+        .padding()
     }
 }

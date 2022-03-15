@@ -41,21 +41,7 @@ struct CategoryListView: View {
     }
 }
 
-struct CategoryRowView: View {
-    let category: Category
-    
-    var body: some View {
-        HStack {
-            Text(category.name)
-            Spacer()
-            Text("\(category.recipes.count) recipes")
-                .font(.caption)
-                .bold()
-                .foregroundColor(category.recipes.count == 0 ? .gray : .cyan)
-        }
-        .padding()
-    }
-}
+
 
 struct ByCategoryView_Previews: PreviewProvider {
     static var previews: some View {
