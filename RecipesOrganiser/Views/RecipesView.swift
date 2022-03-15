@@ -59,7 +59,7 @@ struct MainView: View {
                 ForEach(recipes) { recipe in
                     NavigationLink(destination: RecipeWebView(urlStr: recipe.url)) {
                         RecipeRowView(recipe: recipe)
-                        .gesture(editMode == .active ? tapToEdit(on: recipe) : nil)
+                            .gesture(editMode == .active ? tapToEdit(on: recipe) : nil)
                     }
                 }
                 .onDelete(perform: removeRecipe)
@@ -86,7 +86,7 @@ struct MainView: View {
     }
     
     // returns a gesture to occur when RecipeRowView is tapped during edit mode
-    func tapToEdit(on recipe: Recipe) -> some Gesture {
+    private func tapToEdit(on recipe: Recipe) -> some Gesture {
         TapGesture(count: 1).onEnded {
             idToEdit = recipe.id
             recipeToEdit = ModifiableRecipe(
@@ -98,7 +98,7 @@ struct MainView: View {
         }
     }
     
-    var addButton: some View {
+    private var addButton: some View {
         Button(action: {
             recipeToAdd = ModifiableRecipe()
         }) {
@@ -106,14 +106,9 @@ struct MainView: View {
         }
     }
     
-    func removeRecipe(at offsets: IndexSet) {
+    private func removeRecipe(at offsets: IndexSet) {
         withAnimation {
-            for index in offsets {
-                let recipe = recipes[index]
-                viewContext.delete(recipe)
-                try? viewContext.save()
-                print("recipe deleted")
-            }
+            Recipe.delete(at: offsets, in: viewContext)
         }
     }
 }

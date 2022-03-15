@@ -10,7 +10,7 @@ import SwiftUI
 struct SearchView: View {
     @FetchRequest(fetchRequest: Recipe.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var recipes: FetchedResults<Recipe>
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
-    @State private var searchText = ""
+    @State private var keyword = ""
 
     var body: some View {
         NavigationView {
@@ -21,24 +21,31 @@ struct SearchView: View {
                     }
                 }
             }
-            .searchable(text: $searchText, prompt: "Search recipes")
+            .searchable(text: $keyword, prompt: "Search recipes")
             .navigationTitle("Search")
-            .overlay(searchText.isEmpty ? searchTop: nil)
-            .overlay((!searchText.isEmpty && searchResults.isEmpty) ? Text("No Results Found").font(.title3) : nil)
+            .overlay(keyword.isEmpty ? searchTop: nil)
+            .overlay((!keyword.isEmpty && searchResults.isEmpty) ? Text("No Results Found").font(.title3) : nil)
         }
     }
     
+    // Search for recipes by the `keyword`.
+    // Returns recipes that has a name containing the keyword (case insensitive), and
+    // recipes of which category has a name containing the keyword
     var searchResults: [Recipe] {
-        if searchText.isEmpty {
+        if keyword.isEmpty {
             return []
         }
         else {
             var results = [Recipe]()
-            results += recipes.filter { $0.name.localizedStandardContains(searchText) }
+            
+            // recipes with name that contains the keyword
+            results += recipes.filter { $0.name.localizedStandardContains(keyword) }
 
-            let filteredCategories = categories.filter { $0.name.localizedStandardContains(searchText) }
+            // categories with name that contains the keyword
+            let filteredCategories = categories.filter { $0.name.localizedStandardContains(keyword) }
             filteredCategories.forEach({ category in
                 category.recipes.forEach { recipe in
+                    // avoid appending a duplicate recipe
                     if !results.contains(recipe) {
                         results.append(recipe)
                     }
