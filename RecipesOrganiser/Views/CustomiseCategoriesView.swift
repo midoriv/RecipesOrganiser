@@ -48,7 +48,7 @@ struct CustomiseCategoriesView: View {
             case .failedAsRecipeExists:
                 Text("There is a recipe under the category.")
             case .failedAsDeleteLast:
-                Text("Cannot delete the last category.")
+                Text("The last category can't be deleted.")
             default:
                 Text("Error: Deletion failed.")
             }
