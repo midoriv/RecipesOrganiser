@@ -41,8 +41,6 @@ struct CategoryListView: View {
     }
 }
 
-
-
 struct ByCategoryView_Previews: PreviewProvider {
     static var previews: some View {
         CategoryListView()

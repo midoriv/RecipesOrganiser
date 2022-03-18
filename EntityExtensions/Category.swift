@@ -47,22 +47,29 @@ extension Category {
     }
     
     // Delete a category at the given offsets
-    static func delete(at offsets: IndexSet, in context: NSManagedObjectContext) -> Bool {
-        let all = allCategories(in: context)
-        if !all.isEmpty {
+    static func delete(at offsets: IndexSet, in context: NSManagedObjectContext) -> DeletionState {
+        let allCategories = allCategories(in: context)
+        if !allCategories.isEmpty {
+            if allCategories.count == 1 {
+                return .failedAsDeleteLast
+            }
+            
             for index in offsets {
-                let toDelete = all[index]
+                let categoryToDelete = allCategories[index]
                 
                 // if there exists a recipe that falls under this category
-                if toDelete.recipes.count == 0 {
-                    context.delete(toDelete)
+                if categoryToDelete.recipes.count != 0 {
+                    return .failedAsRecipeExists
+                }
+                else {
+                    context.delete(categoryToDelete)
                     try? context.save()
                     print("Category deleted.")
-                    return true
+                    return .success
                 }
             }
         }
-        return false
+        return .failedAsEmpty
     }
     
     // Delete all categories

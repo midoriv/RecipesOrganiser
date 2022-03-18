@@ -12,10 +12,11 @@ struct CustomiseCategoriesView: View {
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
     @Binding var customisePresented: Bool
     @State private var newCategoryName = ""
-    @State private var showingDeletionAlert = false
     @State private var showingAdditionAlert = false
     @State private var showingLimitAlert = false
     @State private var showingAddSuccessMessage = false
+    @State private var deletionState = DeletionState.success
+    @State private var showingDeletionAlert = false
     
     var body: some View {
         List {
@@ -43,7 +44,14 @@ struct CustomiseCategoriesView: View {
                 showingDeletionAlert = false
             }
         }, message: {
-            Text("There is a recipe under the category.")
+            switch(deletionState) {
+            case .failedAsRecipeExists:
+                Text("There is a recipe under the category.")
+            case .failedAsDeleteLast:
+                Text("Cannot delete the last category.")
+            default:
+                Text("Error: Deletion failed.")
+            }
         })
         .alert("Can't add the category", isPresented: $showingAdditionAlert, actions: {
             Button("OK") {
@@ -88,7 +96,13 @@ struct CustomiseCategoriesView: View {
     func removeCategory(at offsets: IndexSet) {
         withAnimation {
             // show alert if deletion failed
-            showingDeletionAlert = !Category.delete(at: offsets, in: viewContext)
+            deletionState = Category.delete(at: offsets, in: viewContext)
+            switch(deletionState) {
+            case .failedAsRecipeExists, .failedAsDeleteLast, .failedAsEmpty:
+                showingDeletionAlert = true
+            default:
+                showingDeletionAlert = false
+            }
         }
     }
 }
