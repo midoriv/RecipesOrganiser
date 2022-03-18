@@ -13,7 +13,7 @@ struct EmptyView: View {
     
     var body: some View {
         ZStack {
-            Color.cyan
+            Color.yellow
             
             VStack(alignment: .center, spacing: 20) {
                 Text("No Recipe")
