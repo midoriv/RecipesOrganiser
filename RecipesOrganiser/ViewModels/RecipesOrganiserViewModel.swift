@@ -22,7 +22,7 @@ class RecipesOrganiserViewModel: ObservableObject {
     
     private func loadDefaultCategories() {
         print("Load built-in categories")
-        let categoryNames = ["Breakfast", "Lunch", "Dinner", "Snacks", "Appetisers", "Soups", "Salads", "Pasta", "Noodles", "Rice"]
+        let categoryNames = ["Breakfast", "Dinner", "Appetisers", "Soups", "Salads", "Pasta"]
         
         for name in categoryNames {
             Category.add(name: name, in: context)
