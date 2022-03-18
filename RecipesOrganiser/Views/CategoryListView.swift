@@ -30,6 +30,7 @@ struct CategoryListView: View {
                 }
             })
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     private var customiseButton: some View {

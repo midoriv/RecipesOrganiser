@@ -26,6 +26,7 @@ struct SearchView: View {
             .overlay(keyword.isEmpty ? searchTop: nil)
             .overlay((!keyword.isEmpty && searchResults.isEmpty) ? Text("No Results Found").font(.title3) : nil)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     // Search for recipes by the `keyword`.
