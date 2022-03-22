@@ -39,34 +39,7 @@ struct CustomiseCategoriesView: View {
             },
             trailing: saveButton
         )
-        .alert("Can't delete the category", isPresented: $showingDeletionAlert, actions: {
-            Button("OK") {
-                showingDeletionAlert = false
-            }
-        }, message: {
-            switch(deletionState) {
-            case .failedAsRecipeExists:
-                Text("There is a recipe under the category.")
-            case .failedAsDeleteLast:
-                Text("The last category can't be deleted.")
-            default:
-                Text("Error: Deletion failed.")
-            }
-        })
-        .alert("Can't add the category", isPresented: $showingAdditionAlert, actions: {
-            Button("OK") {
-                showingDeletionAlert = false
-            }
-        }, message: {
-            Text("The category already exists.")
-        })
-        .alert("Limit Reached", isPresented: $showingLimitAlert, actions: {
-            Button("OK") {
-                showingLimitAlert = false
-            }
-        }, message: {
-            Text("Maximum categories limit of 30 has been reached.")
-        })
+        .customAlert(add: $showingAdditionAlert, delete: $showingDeletionAlert, deleteState: $deletionState, limit: $showingLimitAlert)
         .overlay(
             showingAddSuccessMessage ?
             SuccessMessageSheet(showingAddSuccessMessage: $showingAddSuccessMessage, newCategoryName: $newCategoryName) : nil
@@ -104,6 +77,87 @@ struct CustomiseCategoriesView: View {
                 showingDeletionAlert = false
             }
         }
+    }
+}
+
+// Apply this modifier to enable a view to show alerts when adding / deleting categories
+struct CustomAlert: ViewModifier {
+    @Binding var showingAdditionAlert: Bool
+    @Binding var showingDeletionAlert: Bool
+    @Binding var deletionState: DeletionState
+    @Binding var showingLimitAlert: Bool
+    
+    private var showingAlertBinding: Binding<Bool> {
+        var showingAlert = showingAdditionAlert || showingDeletionAlert || showingLimitAlert
+        return Binding<Bool>(
+            get: { showingAlert },
+            set: { showingAlert = $0 }
+        )
+    }
+        
+    private var alertTitle: String {
+        if showingAdditionAlert {
+            return "Can't add the category"
+        }
+        
+        if showingDeletionAlert {
+            return "Can't delete the category"
+        }
+        
+        if showingLimitAlert {
+            return "Limit Reached"
+        }
+        
+        return ""
+    }
+    
+    private var alertMessage: String {
+        if showingAdditionAlert {
+            return "The category already exists."
+        }
+        
+        if showingDeletionAlert {
+            switch(deletionState) {
+            case .failedAsRecipeExists:
+                return "There is a recipe under the category."
+            case .failedAsDeleteLast:
+                return "The last category can't be deleted."
+            default:
+                return "Error: Deletion failed."
+            }
+        }
+        
+        if showingLimitAlert {
+            return "Maximum categories limit of 30 has been reached."
+        }
+        
+        return ""
+    }
+    
+    func body(content: Content) -> some View {
+        content
+            .alert(alertTitle, isPresented: showingAlertBinding, actions: {
+                Button("OK") {
+                    showingAdditionAlert = false
+                    showingDeletionAlert = false
+                    showingLimitAlert = false
+                }
+            }, message: {
+                Text(alertMessage)
+            })
+    }
+}
+
+extension View {
+    func customAlert(add: Binding<Bool>, delete: Binding<Bool>, deleteState: Binding<DeletionState>, limit: Binding<Bool>) -> some View {
+        self.modifier(
+            CustomAlert(
+                showingAdditionAlert: add,
+                showingDeletionAlert: delete,
+                deletionState: deleteState,
+                showingLimitAlert: limit
+            )
+        )
     }
 }
 
