@@ -9,8 +9,8 @@ import SwiftUI
 import CoreData
 
 class RecipesOrganiserViewModel: ObservableObject {
-    let context: NSManagedObjectContext
-    @Published var alertState = AlertState()
+    private let context: NSManagedObjectContext
+    @Published private(set) var alertState = AlertState()
     
     init(context: NSManagedObjectContext) {
         self.context = context
@@ -34,6 +34,25 @@ class RecipesOrganiserViewModel: ObservableObject {
     
     func resetAlertState() {
         alertState = AlertState()
+    }
+    
+    func turnOffAddSuccessMessage() {
+        alertState.addSuccessMessage = false
+    }
+    
+    func addCategory(categoryName: String) {
+        // alert case 1: limit reached
+        if Category.categoriesCount(context: context) >= 30 {
+            alertState.limitAlert = true
+        }
+        // alert case 2: the category already exits
+        else if Category.withName(categoryName, context: context) != nil {
+            alertState.addAlert = true
+        }
+        else {
+            Category.add(name: categoryName, in: context)
+            alertState.addSuccessMessage = true
+        }
     }
     
     func removeCategory(_ offsets: IndexSet) {

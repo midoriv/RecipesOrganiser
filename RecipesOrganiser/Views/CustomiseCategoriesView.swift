@@ -44,19 +44,7 @@ struct CustomiseCategoriesView: View {
     // a button to save / add a new category
     private var saveButton: some View {
         Button("Save") {
-            // alert case 1: limit reached
-            if categories.count >= 30 {
-                viewModel.alertState.limitAlert = true
-            }
-            // alert case 2: the category already exits
-            else if Category.withName(newCategoryName, context: viewContext) != nil {
-                viewModel.alertState.addAlert = true
-            }
-            else {
-                Category.add(name: newCategoryName, in: viewContext)
-                viewModel.alertState.addSuccessMessage = true
-            }
-            
+            viewModel.addCategory(categoryName: newCategoryName)
         }
         .disabled(newCategoryName.isEmpty)
     }
@@ -155,7 +143,7 @@ struct SuccessMessageSheet: View {
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     newCategoryName = ""
-                    viewModel.alertState.addSuccessMessage.toggle()
+                    viewModel.turnOffAddSuccessMessage()
                 }
             }
     }
