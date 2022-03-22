@@ -8,15 +8,11 @@
 import SwiftUI
 
 struct CustomiseCategoriesView: View {
+    @EnvironmentObject var viewModel: RecipesOrganiserViewModel
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(fetchRequest: Category.fetchRequest(NSPredicate(format: "TRUEPREDICATE"))) var categories: FetchedResults<Category>
     @Binding var customisePresented: Bool
     @State private var newCategoryName = ""
-    @State private var showingAdditionAlert = false
-    @State private var showingLimitAlert = false
-    @State private var showingAddSuccessMessage = false
-    @State private var deletionState = DeletionState.idle
-    @State private var showingDeletionAlert = false
     
     var body: some View {
         List {
@@ -39,10 +35,9 @@ struct CustomiseCategoriesView: View {
             },
             trailing: saveButton
         )
-        .customAlert(add: $showingAdditionAlert, delete: $showingDeletionAlert, deleteState: $deletionState, limit: $showingLimitAlert)
+        .customAlert()
         .overlay(
-            showingAddSuccessMessage ?
-            SuccessMessageSheet(showingAddSuccessMessage: $showingAddSuccessMessage, newCategoryName: $newCategoryName) : nil
+            viewModel.alertState.addSuccessMessage ? SuccessMessageSheet(newCategoryName: $newCategoryName) : nil
         )
     }
     
@@ -51,15 +46,15 @@ struct CustomiseCategoriesView: View {
         Button("Save") {
             // alert case 1: limit reached
             if categories.count >= 30 {
-                showingLimitAlert = true
+                viewModel.alertState.limitAlert = true
             }
             // alert case 2: the category already exits
             else if Category.withName(newCategoryName, context: viewContext) != nil {
-                showingAdditionAlert = true
+                viewModel.alertState.addAlert = true
             }
             else {
                 Category.add(name: newCategoryName, in: viewContext)
-                showingAddSuccessMessage = true
+                viewModel.alertState.addSuccessMessage = true
             }
             
         }
@@ -68,29 +63,19 @@ struct CustomiseCategoriesView: View {
     
     func removeCategory(at offsets: IndexSet) {
         withAnimation {
-            // show alert if deletion failed
-            deletionState = Category.delete(at: offsets, in: viewContext)
-            switch(deletionState) {
-            // if deletion failed for any reason
-            case .failedAsRecipeExists, .failedAsDeleteLast, .failedAsEmpty:
-                showingDeletionAlert = true
-            default:
-                showingDeletionAlert = false
-                deletionState = .idle
-            }
+            viewModel.removeCategory(offsets)
         }
     }
 }
 
 // Apply this modifier to enable a view to show alerts when adding / deleting categories
 struct CustomAlert: ViewModifier {
-    @Binding var showingAdditionAlert: Bool
-    @Binding var showingDeletionAlert: Bool
-    @Binding var deletionState: DeletionState
-    @Binding var showingLimitAlert: Bool
+    @EnvironmentObject var viewModel: RecipesOrganiserViewModel
     
     private var showingAlertBinding: Binding<Bool> {
-        var showingAlert = showingAdditionAlert || showingDeletionAlert || showingLimitAlert
+        let alertState = viewModel.alertState
+        
+        var showingAlert = alertState.addAlert || alertState.deleteAlert || alertState.limitAlert
         return Binding<Bool>(
             get: { showingAlert },
             set: { showingAlert = $0 }
@@ -98,15 +83,17 @@ struct CustomAlert: ViewModifier {
     }
         
     private var alertTitle: String {
-        if showingAdditionAlert {
+        let alertState = viewModel.alertState
+
+        if alertState.addAlert {
             return "Can't add the category"
         }
         
-        if showingDeletionAlert {
+        if alertState.deleteAlert {
             return "Can't delete the category"
         }
         
-        if showingLimitAlert {
+        if alertState.limitAlert {
             return "Limit Reached"
         }
         
@@ -114,12 +101,14 @@ struct CustomAlert: ViewModifier {
     }
     
     private var alertMessage: String {
-        if showingAdditionAlert {
+        let alertState = viewModel.alertState
+        
+        if alertState.addAlert {
             return "The category already exists."
         }
         
-        if showingDeletionAlert {
-            switch(deletionState) {
+        if alertState.deleteAlert {
+            switch(alertState.deletionState) {
             case .failedAsRecipeExists:
                 return "There is a recipe under the category."
             case .failedAsDeleteLast:
@@ -129,7 +118,7 @@ struct CustomAlert: ViewModifier {
             }
         }
         
-        if showingLimitAlert {
+        if alertState.limitAlert {
             return "Maximum categories limit of 30 has been reached."
         }
         
@@ -140,10 +129,7 @@ struct CustomAlert: ViewModifier {
         content
             .alert(alertTitle, isPresented: showingAlertBinding, actions: {
                 Button("OK") {
-                    showingAdditionAlert = false
-                    showingDeletionAlert = false
-                    showingLimitAlert = false
-                    deletionState = .idle
+                    viewModel.resetAlertState()
                 }
             }, message: {
                 Text(alertMessage)
@@ -152,21 +138,14 @@ struct CustomAlert: ViewModifier {
 }
 
 extension View {
-    func customAlert(add: Binding<Bool>, delete: Binding<Bool>, deleteState: Binding<DeletionState>, limit: Binding<Bool>) -> some View {
-        self.modifier(
-            CustomAlert(
-                showingAdditionAlert: add,
-                showingDeletionAlert: delete,
-                deletionState: deleteState,
-                showingLimitAlert: limit
-            )
-        )
+    func customAlert() -> some View {
+        self.modifier(CustomAlert())
     }
 }
 
 struct SuccessMessageSheet: View {
-    @Binding var showingAddSuccessMessage: Bool
     @Binding var newCategoryName: String
+    @EnvironmentObject var viewModel: RecipesOrganiserViewModel
     
     var body: some View {
         Color.gray
@@ -176,7 +155,7 @@ struct SuccessMessageSheet: View {
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     newCategoryName = ""
-                    showingAddSuccessMessage.toggle()
+                    viewModel.alertState.addSuccessMessage.toggle()
                 }
             }
     }

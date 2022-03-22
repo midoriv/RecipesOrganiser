@@ -18,6 +18,7 @@
 		0788460127D197EB00C29C7C /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0788460027D197EB00C29C7C /* EmptyView.swift */; };
 		0788460427D1A58E00C29C7C /* ModifiableRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0788460327D1A58E00C29C7C /* ModifiableRecipe.swift */; };
 		0788460627D1C6DB00C29C7C /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0788460527D1C6DB00C29C7C /* ErrorManager.swift */; };
+		07BDEE7727E9851000CC612F /* AlertState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BDEE7627E9851000CC612F /* AlertState.swift */; };
 		07BFD03E27869D8800F091DD /* RecipesOrganiserApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BFD03D27869D8800F091DD /* RecipesOrganiserApp.swift */; };
 		07BFD04227869D8A00F091DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07BFD04127869D8A00F091DD /* Assets.xcassets */; };
 		07BFD04527869D8A00F091DD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07BFD04427869D8A00F091DD /* Preview Assets.xcassets */; };
@@ -43,6 +44,7 @@
 		0788460027D197EB00C29C7C /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		0788460327D1A58E00C29C7C /* ModifiableRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiableRecipe.swift; sourceTree = "<group>"; };
 		0788460527D1C6DB00C29C7C /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
+		07BDEE7627E9851000CC612F /* AlertState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertState.swift; sourceTree = "<group>"; };
 		07BFD03A27869D8800F091DD /* RecipesOrganiser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecipesOrganiser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07BFD03D27869D8800F091DD /* RecipesOrganiserApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesOrganiserApp.swift; sourceTree = "<group>"; };
 		07BFD04127869D8A00F091DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				0788460327D1A58E00C29C7C /* ModifiableRecipe.swift */,
+				07BDEE7627E9851000CC612F /* AlertState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 				07D73591278C4438006923EB /* EditView.swift in Sources */,
 				07D7358B278BC7D4006923EB /* RowViews.swift in Sources */,
 				0788460127D197EB00C29C7C /* EmptyView.swift in Sources */,
+				07BDEE7727E9851000CC612F /* AlertState.swift in Sources */,
 				075421BA2789C90400BDDEFD /* Recipe.swift in Sources */,
 				0717993727E06A4A00734CD1 /* DeletionState.swift in Sources */,
 				075421B42789C82600BDDEFD /* AddView.swift in Sources */,
