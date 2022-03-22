@@ -69,58 +69,15 @@ struct CustomAlert: ViewModifier {
             set: { showingAlert = $0 }
         )
     }
-        
-    private var alertTitle: String {
-        let alertState = viewModel.alertState
-
-        if alertState.addAlert {
-            return "Can't add the category"
-        }
-        
-        if alertState.deleteAlert {
-            return "Can't delete the category"
-        }
-        
-        if alertState.limitAlert {
-            return "Limit Reached"
-        }
-        
-        return ""
-    }
-    
-    private var alertMessage: String {
-        let alertState = viewModel.alertState
-        
-        if alertState.addAlert {
-            return "The category already exists."
-        }
-        
-        if alertState.deleteAlert {
-            switch(alertState.deletionState) {
-            case .failedAsRecipeExists:
-                return "There is a recipe under the category."
-            case .failedAsDeleteLast:
-                return "The last category can't be deleted."
-            default:
-                return "Error: Deletion failed."
-            }
-        }
-        
-        if alertState.limitAlert {
-            return "Maximum categories limit of 30 has been reached."
-        }
-        
-        return ""
-    }
     
     func body(content: Content) -> some View {
         content
-            .alert(alertTitle, isPresented: showingAlertBinding, actions: {
+            .alert(viewModel.alertState.alertTitle, isPresented: showingAlertBinding, actions: {
                 Button("OK") {
                     viewModel.resetAlertState()
                 }
             }, message: {
-                Text(alertMessage)
+                Text(viewModel.alertState.alertMessage)
             })
     }
 }
