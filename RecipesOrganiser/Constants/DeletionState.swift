@@ -8,6 +8,7 @@
 import Foundation
 
 enum DeletionState {
+    case idle
     case success
     case failedAsRecipeExists
     case failedAsDeleteLast

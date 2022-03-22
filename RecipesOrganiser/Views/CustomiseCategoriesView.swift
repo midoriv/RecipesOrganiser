@@ -15,7 +15,7 @@ struct CustomiseCategoriesView: View {
     @State private var showingAdditionAlert = false
     @State private var showingLimitAlert = false
     @State private var showingAddSuccessMessage = false
-    @State private var deletionState = DeletionState.success
+    @State private var deletionState = DeletionState.idle
     @State private var showingDeletionAlert = false
     
     var body: some View {
@@ -71,10 +71,12 @@ struct CustomiseCategoriesView: View {
             // show alert if deletion failed
             deletionState = Category.delete(at: offsets, in: viewContext)
             switch(deletionState) {
+            // if deletion failed for any reason
             case .failedAsRecipeExists, .failedAsDeleteLast, .failedAsEmpty:
                 showingDeletionAlert = true
             default:
                 showingDeletionAlert = false
+                deletionState = .idle
             }
         }
     }
@@ -141,6 +143,7 @@ struct CustomAlert: ViewModifier {
                     showingAdditionAlert = false
                     showingDeletionAlert = false
                     showingLimitAlert = false
+                    deletionState = .idle
                 }
             }, message: {
                 Text(alertMessage)
