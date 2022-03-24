@@ -58,6 +58,16 @@ In the *All Recipes* view, the recipes can be deleted in the *Edit* mode as show
 <img src="assets/gifs/delete-recipes.gif" alt="demo - delete recipes" width="300" height="510" />
 
 
-
 ## Installation
 Clone this repository, simply open it on Xcode and run using iOS Simulator.
+
+
+## Technologies
+### 1. Core Data
+Core Data is used to store recipes and categories data respectively as a data model object. The Recipe and Category models establish a one-to-many relationship; each Recipe is under a Category and a Category may be associated with many Recipes. 
+
+
+### 2. SwiftUI
+The user interface is built based on SwiftUI as it is a new platform designed to provide a better and easier development experience.
+
+
