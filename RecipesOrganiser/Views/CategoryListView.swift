@@ -14,7 +14,7 @@ struct CategoryListView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(categories, id: \.name) { category in
+                ForEach(categories, id: \.self) { category in
                     NavigationLink(destination: RecipesByCategoryView(category: category)) {
                         CategoryRowView(category: category)
                     }

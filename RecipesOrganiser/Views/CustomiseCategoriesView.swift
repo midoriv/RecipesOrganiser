@@ -22,7 +22,7 @@ struct CustomiseCategoriesView: View {
                 }
             }
             Section(header: Text("Your Categories")) {
-                ForEach(categories, id: \.name) { category in
+                ForEach(categories, id: \.self) { category in
                     CategoryRowView(category: category)
                 }
                 .onDelete(perform: removeCategory)
